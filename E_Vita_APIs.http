@@ -1,0 +1,6 @@
+@E_Vita_APIs_HostAddress = http://localhost:5278
+
+GET {{E_Vita_APIs_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
