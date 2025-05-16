@@ -37,7 +37,7 @@ namespace E_Vita_APIs.Controllers
 
         // POST: api/discharge
         [HttpPost]
-        public async Task<ActionResult> Create(Discharge discharge)
+        public async Task<ActionResult> Create([FromBody] Discharge discharge)
         {
             await _dischargeRepo.AddAsync(discharge);
             return Ok(discharge);

@@ -37,7 +37,7 @@ namespace E_Vita_APIs.Controllers
 
         // POST
         [HttpPost]
-        public async Task<ActionResult> Create( Lab lab)
+        public async Task<ActionResult> Create([FromBody] Lab lab)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -48,7 +48,7 @@ namespace E_Vita_APIs.Controllers
 
         // PUT
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, Lab updatedLab)
+        public async Task<ActionResult> Update(int id, [FromBody] Lab updatedLab)
         {
             if (id != updatedLab.Id)
                 return BadRequest("ID mismatch.");
