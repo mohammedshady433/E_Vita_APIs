@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace E_Vita_APIs.Repositories
 {
+   
     public class EncounterRepo : IRepositories<Encounter>
     {
         private readonly DBcontext _context;
