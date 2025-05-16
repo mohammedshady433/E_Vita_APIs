@@ -10,10 +10,10 @@ namespace E_Vita_APIs.Controllers
     [ApiController]
 
     
-    public class SchedualeController : ControllerBase
+    public class SchedleController : ControllerBase
     {
         private readonly IRepositories<Scheduale> _context;
-        public SchedualeController(IRepositories<Scheduale> context)
+        public SchedleController(IRepositories<Scheduale> context)
         {
             _context = context;
         }
@@ -28,26 +28,26 @@ namespace E_Vita_APIs.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Scheduale>> GetScheduale(int id)
         {
-            var scheduale = await _context.GetByIdAsync(id);
-            if (scheduale == null)
+            var schedule = await _context.GetByIdAsync(id);
+            if (schedule == null)
             {
                 return NotFound();
             }
-            return Ok(scheduale);
+            return Ok(schedule);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Scheduale>> CreateScheduale([FromBody] Scheduale scheduale)
+        public async Task<ActionResult<Scheduale>> CreateSchedule([FromBody] Scheduale schedule)
         {
-            _context.AddAsync(scheduale);
-            return Ok();
+            await _context.AddAsync(schedule);
+            return Ok(schedule);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteScheduale(int id)
+        public async Task<IActionResult> DeleteSchedule(int id)
         {
-            var scheduale = await _context.GetByIdAsync(id);
-            if (scheduale == null)
+            var schedule = await _context.GetByIdAsync(id);
+            if (schedule == null)
             {
                 return NotFound();
             }
