@@ -40,7 +40,7 @@ namespace E_Vita_APIs.Controllers
 
         // POST: api/Prescription
         [HttpPost]
-        public async Task<ActionResult<Prescription>> CreatePrescription(Prescription prescription)
+        public async Task<ActionResult<Prescription>> CreatePrescription([FromBody] Prescription prescription)
         {
             await _prescriptionRepo.AddAsync(prescription);
             return Ok();
@@ -48,7 +48,7 @@ namespace E_Vita_APIs.Controllers
 
         // PUT: api/Prescription/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePrescription(int id, Prescription prescription)
+        public async Task<IActionResult> UpdatePrescription(int id, [FromBody] Prescription prescription)
         {
             try
             {

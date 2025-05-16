@@ -40,7 +40,7 @@ namespace E_Vita_APIs.Controllers
 
         // POST: api/Practitioner_Role
         [HttpPost]
-        public async Task<ActionResult<Practitioner_Role>> CreatePractitionerRole(Practitioner_Role practitionerRole)
+        public async Task<ActionResult<Practitioner_Role>> CreatePractitionerRole([FromBody] Practitioner_Role practitionerRole)
         {
             await _practitionerRoleRepo.AddAsync(practitionerRole);
             return Ok();
@@ -48,7 +48,7 @@ namespace E_Vita_APIs.Controllers
 
         // PUT: api/Practitioner_Role/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePractitionerRole(int id, Practitioner_Role practitionerRole)
+        public async Task<IActionResult> UpdatePractitionerRole(int id, [FromBody] Practitioner_Role practitionerRole)
         {
             try
             {

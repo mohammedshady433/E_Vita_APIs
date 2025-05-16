@@ -31,7 +31,7 @@ namespace E_Vita_APIs.Controllers
             return Ok(radiology);
         }
         [HttpPost]
-        public async Task<IActionResult> Add(Radiology radiology)
+        public async Task<IActionResult> Add([FromBody] Radiology radiology)
         {
             if (radiology == null)
             {

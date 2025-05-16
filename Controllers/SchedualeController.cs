@@ -37,7 +37,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Scheduale>> CreateScheduale(Scheduale scheduale)
+        public async Task<ActionResult<Scheduale>> CreateScheduale([FromBody] Scheduale scheduale)
         {
             _context.AddAsync(scheduale);
             return Ok();

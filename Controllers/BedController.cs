@@ -38,7 +38,7 @@ namespace E_Vita_APIs.Controllers
 
         // POST: api/beds
         [HttpPost]
-        public async Task<ActionResult> CreateBed(Bed bed)
+        public async Task<ActionResult> CreateBed([FromBody] Bed bed)
         {
             await _bedRepo.AddAsync(bed);
             return Ok();
@@ -46,7 +46,7 @@ namespace E_Vita_APIs.Controllers
 
         // PUT: api/beds/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBed(int id, Bed updatedBed)
+        public async Task<IActionResult> UpdateBed(int id, [FromBody] Bed updatedBed)
         {
             if (id != updatedBed.Id)
                 return BadRequest("ID mismatch");

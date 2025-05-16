@@ -32,7 +32,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Models.Results results)
+        public async Task<IActionResult> Add([FromBody] Models.Results results)
         {
             if (results == null)
             {
@@ -55,7 +55,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Models.Results updatedResults)
+        public async Task<IActionResult> Update(int id, [FromBody] Models.Results updatedResults)
         {
             if (updatedResults == null)
             {

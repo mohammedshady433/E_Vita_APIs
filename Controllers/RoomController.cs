@@ -34,7 +34,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Room room)
+        public async Task<IActionResult> Add([FromBody] Room room)
         {
             if (room == null)
             {
@@ -57,7 +57,7 @@ namespace E_Vita_APIs.Controllers
         }
         
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Room updatedRoom)
+        public async Task<IActionResult> Update(int id, [FromBody] Room updatedRoom)
         {
             if (updatedRoom == null)
             {

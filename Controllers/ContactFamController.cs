@@ -37,7 +37,7 @@ namespace E_Vita_APIs.Controllers
 
         // POST: api/contactfam
         [HttpPost]
-        public async Task<ActionResult> Create(Contact_fam contactFam)
+        public async Task<ActionResult> Create([FromBody] Contact_fam contactFam)
         {
             await _contactFamRepo.AddAsync(contactFam);
             return Ok(contactFam);

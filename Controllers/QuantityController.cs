@@ -33,7 +33,7 @@ namespace E_Vita_APIs.Controllers
             return Ok(quantity);
         }
         [HttpPost]
-        public async Task<IActionResult> Add(Quantity quantity)
+        public async Task<IActionResult> Add([FromBody] Quantity quantity)
         {
             if (quantity == null)
             {
