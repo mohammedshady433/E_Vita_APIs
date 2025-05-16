@@ -1,4 +1,6 @@
-﻿namespace E_Vita_APIs.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace E_Vita_APIs.Models
 {
     public class Scheduale
     {
@@ -6,5 +8,7 @@
         public bool Active { get; set; }
         public ServiceType Service_Type { get; set; }
         public MedicalSpecialty speciality { get; set; }
+        [ForeignKey("Appointment")]
+        public int AppointmentId { get; set; }
     }
 }

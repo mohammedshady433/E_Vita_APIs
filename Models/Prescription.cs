@@ -1,4 +1,6 @@
-﻿namespace E_Vita_APIs.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace E_Vita_APIs.Models
 {
     public class Prescription
     {
@@ -11,5 +13,9 @@
         public string Examination { get; set; } // Examination details
         public bool Reserve { get; set; } // Reserve for future use
         public bool sergery { get; set; } // Surgery details
+        [ForeignKey("Patient")]
+        public int PatientId { get; set; } // Foreign key to the Patient table
+        [ForeignKey("Practitioner")]
+        public int PractionerID { get; set; } // Foreign key to the Practitioner table
     }
 }

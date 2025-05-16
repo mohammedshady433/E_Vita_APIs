@@ -1,4 +1,7 @@
-﻿namespace E_Vita_APIs.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Numerics;
+
+namespace E_Vita_APIs.Models
 {
     public class Appointment
     {
@@ -11,6 +14,10 @@
         public ServiceType Service_Type { get; set; }
         public TimeOnly Duration { get; set; }
         public Service Actor { get; set; }
+        [ForeignKey("Patient")]
+        public int PatientId { get; set; } // Foreign key to the Patient table
+        public ICollection<Practitioner> Practitioners { get; set; } = new List<Practitioner>();
+
     }
     public enum AppointmentStatus
     {

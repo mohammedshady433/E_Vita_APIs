@@ -1,4 +1,6 @@
-﻿namespace E_Vita_APIs.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace E_Vita_APIs.Models
 {
     public class Contact_fam
     {
@@ -7,5 +9,7 @@
         public string Phone { get; set; } // Phone number of the contact
         public string Address { get; set; } // Address of the contact
         public Gender Gender { get; set; }
+        [ForeignKey("Patient")]
+        public int PatientId { get; set; } // Foreign key to the Patient table
     }
 }

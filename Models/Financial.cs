@@ -1,4 +1,5 @@
-﻿using System.Data.SqlTypes;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.SqlTypes;
 
 namespace E_Vita_APIs.Models
 {
@@ -9,6 +10,9 @@ namespace E_Vita_APIs.Models
         public SqlMoney Amount { get; set; } // Amount to be paid
         public float Paid_Amount { get; set; } // for spare use 
         public PaymentMethod Method { get; set; } // Payment method used
+        [ForeignKey("Patient")]
+        public int PatientId { get; set; } // Foreign key to the Patient table
+        public DateTime Payment_Date { get; set; } // Date of payment
 
     }
     public enum financialStatus

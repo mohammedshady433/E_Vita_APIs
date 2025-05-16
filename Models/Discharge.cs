@@ -1,4 +1,6 @@
-﻿namespace E_Vita_APIs.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace E_Vita_APIs.Models
 {
     public class Discharge
     {
@@ -6,6 +8,8 @@
         public TimeOnly When { get; set; } // Time of discharge
         public string Note { get; set; } // Note from the discharge
         public DischargeType DischargeType { get; set; } // e.g. Normal, Against Medical Advice, etc.
+        [ForeignKey("Patient")]
+        public int PatientId { get; set; } // Foreign key to the Patient table
     }
     public enum DischargeType
     {

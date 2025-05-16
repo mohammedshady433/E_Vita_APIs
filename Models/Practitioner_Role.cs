@@ -1,16 +1,18 @@
 ﻿using Microsoft.VisualBasic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Net.Mime;
 
 namespace E_Vita_APIs.Models
 {
     public class Practitioner_Role
     {
-        public int Id { get; set; }
         public DateOnly Period { get; set; }
         public string Code { get; set; }
         public MedicalSpecialty Specialty { get; set; }
         public Service Service { get; set; }
         public DateAndTime Availability { get; set; }
+        [ForeignKey("Practitioner")]
+        public int PractionerID { get; set; } 
     }
 }
 

@@ -1,4 +1,6 @@
-﻿namespace E_Vita_APIs.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace E_Vita_APIs.Models
 {
     public class Radiology
     {
@@ -6,6 +8,7 @@
         public DateTime Date { get; set; }
         public byte[]? Photo { get; set; }  // This stores the image as binary
         public string Note { get; set; }
-
+        [ForeignKey("Patient")]
+        public int PatientId { get; set; } // Foreign key to the Patient table
     }
 }

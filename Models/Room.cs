@@ -1,11 +1,17 @@
-﻿namespace E_Vita_APIs.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace E_Vita_APIs.Models
 {
     public class Room
     {
         public int ID { get; set; }
         public RoomStatus availablity { get; set; }
         public int Floor { get; set; }
-        public string name { get; set; }
+        public string Name { get; set; }
+        [ForeignKey("Patient")]
+        public int PatientId { get; set; } // Foreign key to the Patient table
+        [ForeignKey("Bed")]
+        public int BedID { get; set; }
 
     }
     public enum RoomType
