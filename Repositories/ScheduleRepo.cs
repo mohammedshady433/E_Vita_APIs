@@ -13,23 +13,23 @@ namespace E_Vita_APIs.Repositories
 
         public async Task AddAsync(Scheduale entity)
         {
-            await _context.Schedules.AddAsync(entity);
+            await _context.scheduales.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var schedule = await _context.Schedules.FindAsync(id);
+            var schedule = await _context.scheduales.FindAsync(id);
             if (schedule != null)
             {
-                _context.Schedules.Remove(schedule);
+                _context.scheduales.Remove(schedule);
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task<IEnumerable<Scheduale>> GetAllAsync()
         {
-            return await _context.Schedules
+            return await _context.scheduales
                 .Include(s => s.Appointment)
                 .ToListAsync();
         }
@@ -38,7 +38,7 @@ namespace E_Vita_APIs.Repositories
         {
             try 
             { 
-                return await _context.Schedules
+                return await _context.scheduales
                     .Include(s => s.Appointment)
                     .FirstOrDefaultAsync(s => s.Id == id); 
             }
@@ -50,7 +50,7 @@ namespace E_Vita_APIs.Repositories
 
         public async Task UpdateAsync(Scheduale updatedSchedule, int id)
         {
-            var schedule = await _context.Schedules.FindAsync(id);
+            var schedule = await _context.scheduales.FindAsync(id);
 
             if (schedule == null)
             {

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace E_Vita_APIs.Repositories
 {
-    public class ResultsRepo : IRepositories<Results>
+    public class ResultsRepo : IRepositories<Models.Results>
     {
         private readonly DBcontext _context;
         public ResultsRepo(DBcontext context)
@@ -11,48 +11,48 @@ namespace E_Vita_APIs.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(Results entity)
+        public async Task AddAsync(Models.Results entity)
         {
-            await _context.Results.AddAsync(entity);
+            await _context.Result.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var result = await _context.Results.FindAsync(id);
+            var result = await _context.Result.FindAsync(id);
             if (result != null)
             {
-                _context.Results.Remove(result);
+                _context.Result.Remove(result);
                 await _context.SaveChangesAsync();
             }
         }
 
-        public async Task<IEnumerable<Results>> GetAllAsync()
+        public async Task<IEnumerable<Models.Results>> GetAllAsync()
         {
-            return await _context.Results
+            return await _context.Result
                 .Include(r => r.Lab)
                 .Include(r => r.Patient)
                 .ToListAsync();
         }
 
-        public async Task<Results> GetByIdAsync(int id)
+        public async Task<Models.Results> GetByIdAsync(int id)
         {
             try 
             { 
-                return await _context.Results
+                return await _context.Result
                     .Include(r => r.Lab)
                     .Include(r => r.Patient)
                     .FirstOrDefaultAsync(r => r.ResultId == id); 
             }
             catch
             {
-                return new Results();
+                return new Models.Results();
             }
         }
 
-        public async Task UpdateAsync(Results updatedResult, int id)
+        public async Task UpdateAsync(Models.Results updatedResult, int id)
         {
-            var result = await _context.Results.FindAsync(id);
+            var result = await _context.Result.FindAsync(id);
 
             if (result == null)
             {

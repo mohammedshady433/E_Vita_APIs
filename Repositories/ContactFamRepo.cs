@@ -13,23 +13,23 @@ namespace E_Vita_APIs.Repositories
 
         public async Task AddAsync(Contact_fam entity)
         {
-            await _context.ContactFams.AddAsync(entity);
+            await _context.Contact_Fams.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var contactFam = await _context.ContactFams.FindAsync(id);
+            var contactFam = await _context.Contact_Fams.FindAsync(id);
             if (contactFam != null)
             {
-                _context.ContactFams.Remove(contactFam);
+                _context.Contact_Fams.Remove(contactFam);
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task<IEnumerable<Contact_fam>> GetAllAsync()
         {
-            return await _context.ContactFams
+            return await _context.Contact_Fams
                 .Include(c => c.Patient)
                 .ToListAsync();
         }
@@ -38,7 +38,7 @@ namespace E_Vita_APIs.Repositories
         {
             try 
             { 
-                return await _context.ContactFams
+                return await _context.Contact_Fams
                     .Include(c => c.Patient)
                     .FirstOrDefaultAsync(c => c.PatientId == id); 
             }
@@ -50,7 +50,7 @@ namespace E_Vita_APIs.Repositories
 
         public async Task UpdateAsync(Contact_fam updatedContactFam, int id)
         {
-            var contactFam = await _context.ContactFams.FindAsync(id);
+            var contactFam = await _context.Contact_Fams.FindAsync(id);
 
             if (contactFam == null)
             {

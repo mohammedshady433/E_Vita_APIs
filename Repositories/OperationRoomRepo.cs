@@ -13,23 +13,23 @@ namespace E_Vita_APIs.Repositories
 
         public async Task AddAsync(Operation_Room entity)
         {
-            await _context.OperationRooms.AddAsync(entity);
+            await _context.Operation_Rooms.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var operationRoom = await _context.OperationRooms.FindAsync(id);
+            var operationRoom = await _context.Operation_Rooms.FindAsync(id);
             if (operationRoom != null)
             {
-                _context.OperationRooms.Remove(operationRoom);
+                _context.Operation_Rooms.Remove(operationRoom);
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task<IEnumerable<Operation_Room>> GetAllAsync()
         {
-            return await _context.OperationRooms
+            return await _context.Operation_Rooms
                 .Include(o => o.Practitioners)
                 .Include(o => o.Room)
                 .ToListAsync();
@@ -39,7 +39,7 @@ namespace E_Vita_APIs.Repositories
         {
             try 
             { 
-                return await _context.OperationRooms
+                return await _context.Operation_Rooms
                     .Include(o => o.Practitioners)
                     .Include(o => o.Room)
                     .FirstOrDefaultAsync(o => o.RoomId == id); 
@@ -52,7 +52,7 @@ namespace E_Vita_APIs.Repositories
 
         public async Task UpdateAsync(Operation_Room updatedOperationRoom, int id)
         {
-            var operationRoom = await _context.OperationRooms.FindAsync(id);
+            var operationRoom = await _context.Operation_Rooms.FindAsync(id);
 
             if (operationRoom == null)
             {

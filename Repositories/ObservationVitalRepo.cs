@@ -13,30 +13,30 @@ namespace E_Vita_APIs.Repositories
 
         public async Task AddAsync(Observation_Vital entity)
         {
-            await _context.ObservationVitals.AddAsync(entity);
+            await _context.observation_Vitals.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var observationVital = await _context.ObservationVitals.FindAsync(id);
+            var observationVital = await _context.observation_Vitals.FindAsync(id);
             if (observationVital != null)
             {
-                _context.ObservationVitals.Remove(observationVital);
+                _context.observation_Vitals.Remove(observationVital);
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task<IEnumerable<Observation_Vital>> GetAllAsync()
         {
-            return await _context.ObservationVitals.ToListAsync();
+            return await _context.observation_Vitals.ToListAsync();
         }
 
         public async Task<Observation_Vital> GetByIdAsync(int id)
         {
             try 
             { 
-                return await _context.ObservationVitals.FindAsync(id); 
+                return await _context.observation_Vitals.FindAsync(id); 
             }
             catch
             {
@@ -46,7 +46,7 @@ namespace E_Vita_APIs.Repositories
 
         public async Task UpdateAsync(Observation_Vital updatedObservationVital, int id)
         {
-            var observationVital = await _context.ObservationVitals.FindAsync(id);
+            var observationVital = await _context.observation_Vitals.FindAsync(id);
 
             if (observationVital == null)
             {

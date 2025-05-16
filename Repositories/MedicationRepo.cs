@@ -42,7 +42,7 @@ namespace E_Vita_APIs.Repositories
                 return await _context.Medications
                     .Include(m => m.Patient)
                     .Include(m => m.Practitioner)
-                    .FirstOrDefaultAsync(m => m.Id == id); 
+                    .FirstOrDefaultAsync(m => m.Id == id);
             }
             catch
             {

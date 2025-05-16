@@ -13,23 +13,23 @@ namespace E_Vita_APIs.Repositories
 
         public async Task AddAsync(Practitioner_Role entity)
         {
-            await _context.PractitionerRoles.AddAsync(entity);
+            await _context.Practitioners_Role.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var practitionerRole = await _context.PractitionerRoles.FindAsync(id);
+            var practitionerRole = await _context.Practitioners_Role.FindAsync(id);
             if (practitionerRole != null)
             {
-                _context.PractitionerRoles.Remove(practitionerRole);
+                _context.Practitioners_Role.Remove(practitionerRole);
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task<IEnumerable<Practitioner_Role>> GetAllAsync()
         {
-            return await _context.PractitionerRoles
+            return await _context.Practitioners_Role
                 .Include(p => p.Practitioner)
                 .ToListAsync();
         }
@@ -38,7 +38,7 @@ namespace E_Vita_APIs.Repositories
         {
             try 
             { 
-                return await _context.PractitionerRoles
+                return await _context.Practitioners_Role
                     .Include(p => p.Practitioner)
                     .FirstOrDefaultAsync(p => p.PractitionerId == id); 
             }
@@ -50,7 +50,7 @@ namespace E_Vita_APIs.Repositories
 
         public async Task UpdateAsync(Practitioner_Role updatedPractitionerRole, int id)
         {
-            var practitionerRole = await _context.PractitionerRoles.FindAsync(id);
+            var practitionerRole = await _context.Practitioners_Role.FindAsync(id);
 
             if (practitionerRole == null)
             {
