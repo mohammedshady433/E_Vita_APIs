@@ -15,7 +15,7 @@ namespace E_Vita_APIs.Models
 
         public int BedId { get; set; } // FK property
         [ForeignKey("BedId")]
-        public Bed BedID { get; set; }
+        public Bed Bed { get; set; }
 
     }
     public enum RoomType

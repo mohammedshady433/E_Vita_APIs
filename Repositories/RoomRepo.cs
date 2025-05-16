@@ -31,7 +31,7 @@ namespace E_Vita_APIs.Repositories
         {
             return await _context.Rooms
                 .Include(r => r.Patient)
-                .Include(r => r.BedID)
+                .Include(r => r.Bed)
                 .ToListAsync();
         }
 
@@ -41,7 +41,7 @@ namespace E_Vita_APIs.Repositories
             { 
                 return await _context.Rooms
                     .Include(r => r.Patient)
-                    .Include(r => r.BedID)
+                    .Include(r => r.Bed)
                     .FirstOrDefaultAsync(r => r.ID == id); 
             }
             catch
