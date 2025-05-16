@@ -8,8 +8,10 @@ namespace E_Vita_APIs.Models
         public TimeOnly When { get; set; } // Time of discharge
         public string Note { get; set; } // Note from the discharge
         public DischargeType DischargeType { get; set; } // e.g. Normal, Against Medical Advice, etc.
-        [ForeignKey("Patient")]
-        public int PatientId { get; set; } // Foreign key to the Patient table
+        public int PatientId { get; set; } // FK property
+
+        [ForeignKey("PatientId")]
+        public Patient Patient { get; set; } // Navigation property
     }
     public enum DischargeType
     {

@@ -8,7 +8,9 @@ namespace E_Vita_APIs.Models
         public DateTime Date { get; set; }
         public byte[]? Photo { get; set; }  // This stores the image as binary
         public string Note { get; set; }
-        [ForeignKey("Patient")]
-        public int PatientId { get; set; } // Foreign key to the Patient table
+        public int PatientId { get; set; } // FK property
+
+        [ForeignKey("PatientId")]
+        public Patient Patient { get; set; } // Navigation property
     }
 }

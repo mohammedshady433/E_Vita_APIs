@@ -6,7 +6,9 @@ namespace E_Vita_APIs.Models
     {
         public float Value { get; set; }
         public string Unit { get; set; }
-        [ForeignKey("Observation")]
-        public int ObservationID { get; set; }
+        public int Observation_VitalsId { get; set; } // FK property
+
+        [ForeignKey("Observation_VitalsId")]
+        public Observation_Vital Observation_Vital { get; set; } // Navigation property
     }
 }

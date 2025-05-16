@@ -10,9 +10,10 @@ namespace E_Vita_APIs.Models
         public string Code { get; set; }
         public MedicalSpecialty Specialty { get; set; }
         public Service Service { get; set; }
-        public DateAndTime Availability { get; set; }
-        [ForeignKey("Practitioner")]
-        public int PractionerID { get; set; } 
+        public DateTime Availability { get; set; }
+        public int PractitionerId { get; set; }
+        [ForeignKey("PractitionerId")]
+        public Practitioner Practitioner { get; set; } // Navigation property   
     }
 }
 

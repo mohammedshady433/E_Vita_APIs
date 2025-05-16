@@ -8,10 +8,14 @@ namespace E_Vita_APIs.Models
         public RoomStatus availablity { get; set; }
         public int Floor { get; set; }
         public string Name { get; set; }
-        [ForeignKey("Patient")]
-        public int PatientId { get; set; } // Foreign key to the Patient table
-        [ForeignKey("Bed")]
-        public int BedID { get; set; }
+        public int PatientId { get; set; } // FK property
+
+        [ForeignKey("PatientId")]
+        public Patient Patient { get; set; } // Navigation property
+
+        public int BedId { get; set; } // FK property
+        [ForeignKey("BedId")]
+        public Bed BedID { get; set; }
 
     }
     public enum RoomType

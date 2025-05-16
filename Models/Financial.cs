@@ -7,11 +7,13 @@ namespace E_Vita_APIs.Models
     {
         public int Id { get; set; }
         public financialStatus Status { get; set; } // Financial status of the patient
-        public SqlMoney Amount { get; set; } // Amount to be paid
+        public float Amount { get; set; } // Amount to be paid
         public float Paid_Amount { get; set; } // for spare use 
         public PaymentMethod Method { get; set; } // Payment method used
-        [ForeignKey("Patient")]
-        public int PatientId { get; set; } // Foreign key to the Patient table
+        public int PatientId { get; set; } // FK property
+
+        [ForeignKey("PatientId")]
+        public Patient Patient { get; set; } // Navigation property
         public DateTime Payment_Date { get; set; } // Date of payment
 
     }

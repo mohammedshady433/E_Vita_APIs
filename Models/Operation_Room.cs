@@ -8,8 +8,9 @@ namespace E_Vita_APIs.Models
         public string Operation { get; set; }
         public string Equipment { get; set; }
         public ICollection<Practitioner> Practitioners { get; set; } = new List<Practitioner>();
-        [ForeignKey("Room")]
-        public int RoomID { get; set; }
+        public int RoomId { get; set; }
+        [ForeignKey("RoomId")]
+        public Room Room { get; set; } // Navigation property   
 
     }
 }

@@ -13,9 +13,12 @@ namespace E_Vita_APIs.Models
         public string Examination { get; set; } // Examination details
         public bool Reserve { get; set; } // Reserve for future use
         public bool sergery { get; set; } // Surgery details
-        [ForeignKey("Patient")]
-        public int PatientId { get; set; } // Foreign key to the Patient table
-        [ForeignKey("Practitioner")]
-        public int PractionerID { get; set; } // Foreign key to the Practitioner table
+        public int PatientId { get; set; } // FK property
+
+        [ForeignKey("PatientId")]
+        public Patient Patient { get; set; } // Navigation property
+        public int PractitionerID { get; set; }
+        [ForeignKey("PractitionerID")]
+        public Practitioner Practitioner { get; set; } // Navigation property   
     }
 }

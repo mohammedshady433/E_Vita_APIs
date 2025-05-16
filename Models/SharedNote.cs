@@ -6,7 +6,8 @@ namespace E_Vita_APIs.Models
     {
         public int Id { get; set; }
         public string content { get; set; } // Content of the note
-        [ForeignKey("Practitioner")]
-        public int PractionerID { get; set; }
+        public int PractitionerID { get; set; }
+        [ForeignKey("PractitionerID")]
+        public Practitioner Practitioner { get; set; } // Navigation property   
     }
 }

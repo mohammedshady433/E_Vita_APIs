@@ -9,7 +9,9 @@ namespace E_Vita_APIs.Models
         public string Phone { get; set; } // Phone number of the contact
         public string Address { get; set; } // Address of the contact
         public Gender Gender { get; set; }
-        [ForeignKey("Patient")]
-        public int PatientId { get; set; } // Foreign key to the Patient table
+        public int PatientId { get; set; } // FK property
+
+        [ForeignKey("PatientId")]
+        public Patient Patient { get; set; } // Navigation property
     }
 }
