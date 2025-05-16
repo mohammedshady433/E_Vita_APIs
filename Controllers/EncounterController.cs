@@ -61,9 +61,5 @@ namespace E_Vita_APIs.Controllers
             await _encounterRepo.DeleteAsync(id);
             return Ok();
         }
-
-
-
-
     }
 }

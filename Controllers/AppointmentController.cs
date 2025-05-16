@@ -38,7 +38,7 @@ namespace E_Vita_APIs.Controllers
 
         // POST: api/appointments
         [HttpPost]
-        public async Task<ActionResult> CreateAppointment(Appointment appointment)
+        public async Task<ActionResult> CreateAppointment([FromBody] Appointment appointment)
         {
             await _appointmentRepo.AddAsync(appointment);
             return Ok();
@@ -46,7 +46,7 @@ namespace E_Vita_APIs.Controllers
 
         // PUT: api/appointments/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAppointment(int id, Appointment updatedAppointment)
+        public async Task<IActionResult> UpdateAppointment(int id, [FromBody] Appointment updatedAppointment)
         {
             if (id != updatedAppointment.Id)
                 return BadRequest("ID mismatch");
@@ -64,7 +64,7 @@ namespace E_Vita_APIs.Controllers
 
         // DELETE: api/appointments/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAppointment(int id)
+        public async Task<IActionResult> DeleteAppointment( int id)
         {
             var appointment = await _appointmentRepo.GetByIdAsync(id);
 
