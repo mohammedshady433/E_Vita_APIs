@@ -1,4 +1,5 @@
 ﻿using E_Vita_APIs.Models;
+using E_Vita_APIs.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,8 +10,8 @@ namespace E_Vita_APIs.Controllers
     [ApiController]
     public class SharednotesController : ControllerBase
     {
-        private readonly DBcontext _context;
-        public SharednotesController(DBcontext context)
+        private readonly IRepositories<SharedNote> _context;
+        public SharednotesController(IRepositories<SharedNote> context)
         {
             _context = context;
         }
@@ -18,14 +19,14 @@ namespace E_Vita_APIs.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SharedNote>>> GetAllSharedNotes()
         {
-            var sharedNotes = await _context.SharedNotes.ToListAsync();
+            var sharedNotes = await _context.GetAllAsync();
             return Ok(sharedNotes);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<SharedNote>> GetSharedNote(int id)
         {
-            var sharedNote = await _context.SharedNotes.FindAsync(id);
+            var sharedNote = await _context.GetByIdAsync(id);
             if (sharedNote == null)
             {
                 return NotFound();
@@ -37,62 +38,35 @@ namespace E_Vita_APIs.Controllers
         [HttpPost]
         public async Task<ActionResult<SharedNote>> CreateSharedNote(SharedNote sharedNote)
         {
-            _context.SharedNotes.Add(sharedNote);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetSharedNote), new { id = sharedNote.Id }, sharedNote);
+            await _context.AddAsync(sharedNote);
+            return Ok();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSharedNote(int id, SharedNote sharedNote)
-        {
-            if (id != sharedNote.Id)
-            {
-                return BadRequest();
-            }
-            _context.Entry(sharedNote).State = EntityState.Modified;
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SharedNoteExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return NoContent();
-        }
+
+
 
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSharedNote(int id)
         {
-            var sharedNote = await _context.SharedNotes.FindAsync(id);
+            var sharedNote = await _context.GetByIdAsync(id);
             if (sharedNote == null)
             {
                 return NotFound();
             }
-            _context.SharedNotes.Remove(sharedNote);
-            await _context.SaveChangesAsync();
+            await _context.DeleteAsync(id);
             return NoContent();
         }
 
-        private bool SharedNoteExists(int id)
-        {
-            return _context.SharedNotes.Any(e => e.Id == id);
-        }
+       
 
         [HttpGet("practitioner/{practitionerId}")]
         public async Task<ActionResult<IEnumerable<SharedNote>>> GetSharedNotesByPractitioner(int practitionerId)
         {
-            var sharedNotes = await _context.SharedNotes
+            var allSharedNotes = await _context.GetAllAsync();
+            var sharedNotes = allSharedNotes
                 .Where(sn => sn.PractitionerID == practitionerId)
-                .ToListAsync();
+                .ToList();
             if (sharedNotes == null || !sharedNotes.Any())
             {
                 return NotFound();
