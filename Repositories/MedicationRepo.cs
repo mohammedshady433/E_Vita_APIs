@@ -60,7 +60,6 @@ namespace E_Vita_APIs.Repositories
             }
 
             medication.Dose = updatedMedication.Dose;
-            medication.Unit = updatedMedication.Unit;
             medication.Time = updatedMedication.Time;
             medication.Medication_name = updatedMedication.Medication_name;
             medication.PractitionerID = updatedMedication.PractitionerID;

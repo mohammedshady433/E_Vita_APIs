@@ -41,7 +41,6 @@ builder.Services.AddScoped<IRepositories<WardRound>, WardRoundRepo>();
 builder.Services.AddScoped<IRepositories<AppointmentPractitioner>, AppointmentPractitionerRepo>();
 // ------------------------------------------------------------------------
 builder.Services.AddScoped<AppointmentPractitionerRepo>();
-
 // Dependency Injection for DBcontext
 builder.Services.AddDbContext<DBcontext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),

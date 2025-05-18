@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Vita_APIs.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20250517205955_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250518013542_ModelModificarion")]
+    partial class ModelModificarion
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -297,10 +297,6 @@ namespace E_Vita_APIs.Migrations
                     b.Property<TimeOnly>("Time")
                         .HasColumnType("time(6)");
 
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PatientId");
@@ -383,6 +379,9 @@ namespace E_Vita_APIs.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Nationality")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Phone")
@@ -488,6 +487,10 @@ namespace E_Vita_APIs.Migrations
 
                     b.Property<int>("MedicationId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Medication_name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");

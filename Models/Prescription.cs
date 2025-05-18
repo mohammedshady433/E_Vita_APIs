@@ -9,6 +9,7 @@ namespace E_Vita_APIs.Models
         public string ReasonForVisit { get; set; }
         [JsonIgnore]
         public Medication Medication { get; set; } // Medication class
+        public string Medication_name { get; set; } // Medication name
         public string Diseases { get; set; } // List of diseases
         [JsonIgnore]
         public Lab Labtest { get; set; } // Lab test class
