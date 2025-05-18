@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using MySqlConnector;
 using Microsoft.Extensions.DependencyInjection;
 using E_Vita_APIs.Models;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +38,9 @@ builder.Services.AddScoped<IRepositories<Room>, RoomRepo>();
 builder.Services.AddScoped<IRepositories<Scheduale>, ScheduleRepo>();
 builder.Services.AddScoped<IRepositories<SharedNote>, SharedNoteRepo>();
 builder.Services.AddScoped<IRepositories<WardRound>, WardRoundRepo>();
-
+builder.Services.AddScoped<IRepositories<AppointmentPractitioner>, AppointmentPractitionerRepo>();
+// ------------------------------------------------------------------------
+builder.Services.AddScoped<AppointmentPractitionerRepo>();
 
 // Dependency Injection for DBcontext
 builder.Services.AddDbContext<DBcontext>(options =>

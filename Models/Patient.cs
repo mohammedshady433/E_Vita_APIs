@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace E_Vita_APIs.Models
 {
@@ -13,10 +14,13 @@ namespace E_Vita_APIs.Models
         public OUTIN_Patient Status { get; set; }
         public DateTime DateOfBirth { get; set; }
         public Gender Gender { get; set; }
+        [JsonIgnore]
         public ICollection<Practitioner> Practitioners { get; set; } = new List<Practitioner>();
-        public int WardRoundId { get; set; }
+        public int? WardRoundId { get; set; }
         [ForeignKey("WardRoundId")]
-        public WardRound WardRound { get; set; } // Navigation property   
+        [JsonIgnore]
+        public WardRound? WardRound { get; set; } // Navigation property   
+        [JsonIgnore]
         public ICollection<Results> Results { get; set; }
 
 

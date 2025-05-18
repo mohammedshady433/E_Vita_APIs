@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace E_Vita_APIs.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -83,6 +83,8 @@ namespace E_Vita_APIs.Migrations
                     Address = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Gender = table.Column<int>(type: "int", nullable: false),
+                    PasswordHash = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     DateOfBirth = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
@@ -199,7 +201,7 @@ namespace E_Vita_APIs.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    WardRoundId = table.Column<int>(type: "int", nullable: false)
+                    WardRoundId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -208,8 +210,7 @@ namespace E_Vita_APIs.Migrations
                         name: "FK_Patients_WardRounds_WardRoundId",
                         column: x => x.WardRoundId,
                         principalTable: "WardRounds",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -222,9 +223,9 @@ namespace E_Vita_APIs.Migrations
                     Start = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     End = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    Cancelation_Reason = table.Column<string>(type: "longtext", nullable: false)
+                    Cancelation_Reason = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cancelation_Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Cancelation_Date = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     Service_Type = table.Column<int>(type: "int", nullable: false),
                     Duration = table.Column<TimeOnly>(type: "time(6)", nullable: false),
                     Actor = table.Column<int>(type: "int", nullable: false),
@@ -524,7 +525,7 @@ namespace E_Vita_APIs.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "AppointmentPractitioner",
+                name: "AppointmentPractitioners",
                 columns: table => new
                 {
                     AppointmentId = table.Column<int>(type: "int", nullable: false),
@@ -532,15 +533,15 @@ namespace E_Vita_APIs.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AppointmentPractitioner", x => new { x.AppointmentId, x.PractitionersId });
+                    table.PrimaryKey("PK_AppointmentPractitioners", x => new { x.AppointmentId, x.PractitionersId });
                     table.ForeignKey(
-                        name: "FK_AppointmentPractitioner_Appointments_AppointmentId",
+                        name: "FK_AppointmentPractitioners_Appointments_AppointmentId",
                         column: x => x.AppointmentId,
                         principalTable: "Appointments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AppointmentPractitioner_Practitioners_PractitionersId",
+                        name: "FK_AppointmentPractitioners_Practitioners_PractitionersId",
                         column: x => x.PractitionersId,
                         principalTable: "Practitioners",
                         principalColumn: "Id",
@@ -583,7 +584,8 @@ namespace E_Vita_APIs.Migrations
                     Diseases = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     LabtestId = table.Column<int>(type: "int", nullable: false),
-                    RadiologyTestId = table.Column<int>(type: "int", nullable: false),
+                    RadiologyTest = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Examination = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Reserve = table.Column<bool>(type: "tinyint(1)", nullable: false),
@@ -616,12 +618,6 @@ namespace E_Vita_APIs.Migrations
                         name: "FK_Prescriptions_Practitioners_PractitionerID",
                         column: x => x.PractitionerID,
                         principalTable: "Practitioners",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Prescriptions_Radiologies_RadiologyTestId",
-                        column: x => x.RadiologyTestId,
-                        principalTable: "Radiologies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -676,8 +672,8 @@ namespace E_Vita_APIs.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppointmentPractitioner_PractitionersId",
-                table: "AppointmentPractitioner",
+                name: "IX_AppointmentPractitioners_PractitionersId",
+                table: "AppointmentPractitioners",
                 column: "PractitionersId");
 
             migrationBuilder.CreateIndex(
@@ -756,11 +752,6 @@ namespace E_Vita_APIs.Migrations
                 column: "PractitionerID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Prescriptions_RadiologyTestId",
-                table: "Prescriptions",
-                column: "RadiologyTestId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Radiologies_PatientId",
                 table: "Radiologies",
                 column: "PatientId");
@@ -805,7 +796,7 @@ namespace E_Vita_APIs.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AppointmentPractitioner");
+                name: "AppointmentPractitioners");
 
             migrationBuilder.DropTable(
                 name: "Contact_Fams");
@@ -838,6 +829,9 @@ namespace E_Vita_APIs.Migrations
                 name: "Quantities");
 
             migrationBuilder.DropTable(
+                name: "Radiologies");
+
+            migrationBuilder.DropTable(
                 name: "Result");
 
             migrationBuilder.DropTable(
@@ -851,9 +845,6 @@ namespace E_Vita_APIs.Migrations
 
             migrationBuilder.DropTable(
                 name: "Medications");
-
-            migrationBuilder.DropTable(
-                name: "Radiologies");
 
             migrationBuilder.DropTable(
                 name: "observation_Vitals");

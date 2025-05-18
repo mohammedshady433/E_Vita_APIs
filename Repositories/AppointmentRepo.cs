@@ -31,7 +31,6 @@ namespace E_Vita_APIs.Repositories
         {
             return await _context.Appointments
                 .Include(a => a.Patient)
-                .Include(a => a.Practitioners)
                 .ToListAsync();
         }
 
@@ -41,7 +40,6 @@ namespace E_Vita_APIs.Repositories
             { 
                 return await _context.Appointments
                     .Include(a => a.Patient)
-                    .Include(a => a.Practitioners)
                     .FirstOrDefaultAsync(a => a.Id == id); 
             }
             catch

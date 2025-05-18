@@ -30,7 +30,6 @@ namespace E_Vita_APIs.Repositories
         public async Task<IEnumerable<Practitioner>> GetAllAsync()
         {
             return await _context.Practitioners
-                .Include(p => p.Appointment)
                 .Include(p => p.operation_Rooms)
                 .Include(p => p.Patients)
                 .ToListAsync();
@@ -41,7 +40,6 @@ namespace E_Vita_APIs.Repositories
             try 
             { 
                 return await _context.Practitioners
-                    .Include(p => p.Appointment)
                     .Include(p => p.operation_Rooms)
                     .Include(p => p.Patients)
                     .FirstOrDefaultAsync(p => p.Id == id); 

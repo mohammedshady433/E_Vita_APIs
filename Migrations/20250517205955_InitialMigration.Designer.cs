@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Vita_APIs.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20250516082603_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250517205955_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,21 +24,6 @@ namespace E_Vita_APIs.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
-
-            modelBuilder.Entity("AppointmentPractitioner", b =>
-                {
-                    b.Property<int>("AppointmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PractitionersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AppointmentId", "PractitionersId");
-
-                    b.HasIndex("PractitionersId");
-
-                    b.ToTable("AppointmentPractitioner");
-                });
 
             modelBuilder.Entity("E_Vita_APIs.Models.Appointment", b =>
                 {
@@ -51,11 +36,10 @@ namespace E_Vita_APIs.Migrations
                     b.Property<int>("Actor")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Cancelation_Date")
+                    b.Property<DateTime?>("Cancelation_Date")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Cancelation_Reason")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<TimeOnly>("Duration")
@@ -81,6 +65,21 @@ namespace E_Vita_APIs.Migrations
                     b.HasIndex("PatientId");
 
                     b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("E_Vita_APIs.Models.AppointmentPractitioner", b =>
+                {
+                    b.Property<int>("AppointmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PractitionersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppointmentId", "PractitionersId");
+
+                    b.HasIndex("PractitionersId");
+
+                    b.ToTable("AppointmentPractitioners");
                 });
 
             modelBuilder.Entity("E_Vita_APIs.Models.Bed", b =>
@@ -393,7 +392,7 @@ namespace E_Vita_APIs.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("WardRoundId")
+                    b.Property<int?>("WardRoundId")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -426,6 +425,10 @@ namespace E_Vita_APIs.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -492,8 +495,9 @@ namespace E_Vita_APIs.Migrations
                     b.Property<int>("PractitionerID")
                         .HasColumnType("int");
 
-                    b.Property<int>("RadiologyTestId")
-                        .HasColumnType("int");
+                    b.Property<string>("RadiologyTest")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ReasonForVisit")
                         .IsRequired()
@@ -514,8 +518,6 @@ namespace E_Vita_APIs.Migrations
                     b.HasIndex("PatientId");
 
                     b.HasIndex("PractitionerID");
-
-                    b.HasIndex("RadiologyTestId");
 
                     b.ToTable("Prescriptions");
                 });
@@ -739,21 +741,6 @@ namespace E_Vita_APIs.Migrations
                     b.ToTable("PatientPractitioner");
                 });
 
-            modelBuilder.Entity("AppointmentPractitioner", b =>
-                {
-                    b.HasOne("E_Vita_APIs.Models.Appointment", null)
-                        .WithMany()
-                        .HasForeignKey("AppointmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("E_Vita_APIs.Models.Practitioner", null)
-                        .WithMany()
-                        .HasForeignKey("PractitionersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("E_Vita_APIs.Models.Appointment", b =>
                 {
                     b.HasOne("E_Vita_APIs.Models.Patient", "Patient")
@@ -763,6 +750,25 @@ namespace E_Vita_APIs.Migrations
                         .IsRequired();
 
                     b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("E_Vita_APIs.Models.AppointmentPractitioner", b =>
+                {
+                    b.HasOne("E_Vita_APIs.Models.Appointment", "Appointment")
+                        .WithMany("AppointmentPractitioners")
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("E_Vita_APIs.Models.Practitioner", "Practitioner")
+                        .WithMany("AppointmentPractitioners")
+                        .HasForeignKey("PractitionersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Appointment");
+
+                    b.Navigation("Practitioner");
                 });
 
             modelBuilder.Entity("E_Vita_APIs.Models.Contact_fam", b =>
@@ -870,9 +876,7 @@ namespace E_Vita_APIs.Migrations
                 {
                     b.HasOne("E_Vita_APIs.Models.WardRound", "WardRound")
                         .WithMany()
-                        .HasForeignKey("WardRoundId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("WardRoundId");
 
                     b.Navigation("WardRound");
                 });
@@ -914,12 +918,6 @@ namespace E_Vita_APIs.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("E_Vita_APIs.Models.Radiology", "RadiologyTest")
-                        .WithMany()
-                        .HasForeignKey("RadiologyTestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Labtest");
 
                     b.Navigation("Medication");
@@ -927,8 +925,6 @@ namespace E_Vita_APIs.Migrations
                     b.Navigation("Patient");
 
                     b.Navigation("Practitioner");
-
-                    b.Navigation("RadiologyTest");
                 });
 
             modelBuilder.Entity("E_Vita_APIs.Models.Quantity", b =>
@@ -974,7 +970,7 @@ namespace E_Vita_APIs.Migrations
 
             modelBuilder.Entity("E_Vita_APIs.Models.Room", b =>
                 {
-                    b.HasOne("E_Vita_APIs.Models.Bed", "BedID")
+                    b.HasOne("E_Vita_APIs.Models.Bed", "Bed")
                         .WithMany()
                         .HasForeignKey("BedId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -986,7 +982,7 @@ namespace E_Vita_APIs.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("BedID");
+                    b.Navigation("Bed");
 
                     b.Navigation("Patient");
                 });
@@ -1054,6 +1050,11 @@ namespace E_Vita_APIs.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("E_Vita_APIs.Models.Appointment", b =>
+                {
+                    b.Navigation("AppointmentPractitioners");
+                });
+
             modelBuilder.Entity("E_Vita_APIs.Models.Lab", b =>
                 {
                     b.Navigation("Results");
@@ -1062,6 +1063,11 @@ namespace E_Vita_APIs.Migrations
             modelBuilder.Entity("E_Vita_APIs.Models.Patient", b =>
                 {
                     b.Navigation("Results");
+                });
+
+            modelBuilder.Entity("E_Vita_APIs.Models.Practitioner", b =>
+                {
+                    b.Navigation("AppointmentPractitioners");
                 });
 #pragma warning restore 612, 618
         }

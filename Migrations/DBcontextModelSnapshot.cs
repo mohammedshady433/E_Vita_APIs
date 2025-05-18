@@ -22,21 +22,6 @@ namespace E_Vita_APIs.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("AppointmentPractitioner", b =>
-                {
-                    b.Property<int>("AppointmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PractitionersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AppointmentId", "PractitionersId");
-
-                    b.HasIndex("PractitionersId");
-
-                    b.ToTable("AppointmentPractitioner");
-                });
-
             modelBuilder.Entity("E_Vita_APIs.Models.Appointment", b =>
                 {
                     b.Property<int>("Id")
@@ -48,11 +33,10 @@ namespace E_Vita_APIs.Migrations
                     b.Property<int>("Actor")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Cancelation_Date")
+                    b.Property<DateTime?>("Cancelation_Date")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Cancelation_Reason")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<TimeOnly>("Duration")
@@ -78,6 +62,21 @@ namespace E_Vita_APIs.Migrations
                     b.HasIndex("PatientId");
 
                     b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("E_Vita_APIs.Models.AppointmentPractitioner", b =>
+                {
+                    b.Property<int>("AppointmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PractitionersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppointmentId", "PractitionersId");
+
+                    b.HasIndex("PractitionersId");
+
+                    b.ToTable("AppointmentPractitioners");
                 });
 
             modelBuilder.Entity("E_Vita_APIs.Models.Bed", b =>
@@ -390,7 +389,7 @@ namespace E_Vita_APIs.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("WardRoundId")
+                    b.Property<int?>("WardRoundId")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -739,21 +738,6 @@ namespace E_Vita_APIs.Migrations
                     b.ToTable("PatientPractitioner");
                 });
 
-            modelBuilder.Entity("AppointmentPractitioner", b =>
-                {
-                    b.HasOne("E_Vita_APIs.Models.Appointment", null)
-                        .WithMany()
-                        .HasForeignKey("AppointmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("E_Vita_APIs.Models.Practitioner", null)
-                        .WithMany()
-                        .HasForeignKey("PractitionersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("E_Vita_APIs.Models.Appointment", b =>
                 {
                     b.HasOne("E_Vita_APIs.Models.Patient", "Patient")
@@ -763,6 +747,25 @@ namespace E_Vita_APIs.Migrations
                         .IsRequired();
 
                     b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("E_Vita_APIs.Models.AppointmentPractitioner", b =>
+                {
+                    b.HasOne("E_Vita_APIs.Models.Appointment", "Appointment")
+                        .WithMany("AppointmentPractitioners")
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("E_Vita_APIs.Models.Practitioner", "Practitioner")
+                        .WithMany("AppointmentPractitioners")
+                        .HasForeignKey("PractitionersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Appointment");
+
+                    b.Navigation("Practitioner");
                 });
 
             modelBuilder.Entity("E_Vita_APIs.Models.Contact_fam", b =>
@@ -870,9 +873,7 @@ namespace E_Vita_APIs.Migrations
                 {
                     b.HasOne("E_Vita_APIs.Models.WardRound", "WardRound")
                         .WithMany()
-                        .HasForeignKey("WardRoundId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("WardRoundId");
 
                     b.Navigation("WardRound");
                 });
@@ -1046,6 +1047,11 @@ namespace E_Vita_APIs.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("E_Vita_APIs.Models.Appointment", b =>
+                {
+                    b.Navigation("AppointmentPractitioners");
+                });
+
             modelBuilder.Entity("E_Vita_APIs.Models.Lab", b =>
                 {
                     b.Navigation("Results");
@@ -1054,6 +1060,11 @@ namespace E_Vita_APIs.Migrations
             modelBuilder.Entity("E_Vita_APIs.Models.Patient", b =>
                 {
                     b.Navigation("Results");
+                });
+
+            modelBuilder.Entity("E_Vita_APIs.Models.Practitioner", b =>
+                {
+                    b.Navigation("AppointmentPractitioners");
                 });
 #pragma warning restore 612, 618
         }

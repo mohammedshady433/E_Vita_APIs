@@ -27,7 +27,7 @@ namespace E_Vita_APIs
         public DbSet<Lab> Labs { get; set; }
         public DbSet<Radiology> Radiologies { get; set; }
         public DbSet<Practitioner_Role> Practitioners_Role { get; set; }
-
+        public DbSet<AppointmentPractitioner> AppointmentPractitioners { get; set; }
 
         public DBcontext(DbContextOptions options) : base(options)
         {
@@ -65,6 +65,19 @@ namespace E_Vita_APIs
                 .HasOne(r => r.Patient)
                 .WithMany(p => p.Results)
                 .HasForeignKey(r => r.PatientId);
+
+            modelBuilder.Entity<AppointmentPractitioner>()
+            .HasKey(ap => new { ap.AppointmentId, ap.PractitionersId });
+
+            modelBuilder.Entity<AppointmentPractitioner>()
+                .HasOne(ap => ap.Appointment)
+                .WithMany(a => a.AppointmentPractitioners)
+                .HasForeignKey(ap => ap.AppointmentId);
+
+            modelBuilder.Entity<AppointmentPractitioner>()
+                .HasOne(ap => ap.Practitioner)
+                .WithMany(p => p.AppointmentPractitioners)
+                .HasForeignKey(ap => ap.PractitionersId);
 
             base.OnModelCreating(modelBuilder); // Call the base method to ensure any additional configurations are applied
         }
