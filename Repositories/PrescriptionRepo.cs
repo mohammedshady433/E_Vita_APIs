@@ -34,7 +34,6 @@ namespace E_Vita_APIs.Repositories
                 .Include(p => p.Practitioner)
                 .Include(p => p.Medication)
                 .Include(p => p.Labtest)
-                .Include(p => p.RadiologyTest)
                 .ToListAsync();
         }
 
@@ -47,7 +46,6 @@ namespace E_Vita_APIs.Repositories
                     .Include(p => p.Practitioner)
                     .Include(p => p.Medication)
                     .Include(p => p.Labtest)
-                    .Include(p => p.RadiologyTest)
                     .FirstOrDefaultAsync(p => p.Id == id); 
             }
             catch

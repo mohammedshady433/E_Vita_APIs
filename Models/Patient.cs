@@ -23,7 +23,7 @@ namespace E_Vita_APIs.Models
         [JsonIgnore]
         public WardRound? WardRound { get; set; } // Navigation property   
         [JsonIgnore]
-        public ICollection<Results> Results { get; set; }
+        public ICollection<Results>? Results { get; set; }
 
 
     }

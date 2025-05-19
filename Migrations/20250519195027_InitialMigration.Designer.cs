@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Vita_APIs.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20250518013542_ModelModificarion")]
-    partial class ModelModificarion
+    [Migration("20250519195027_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
