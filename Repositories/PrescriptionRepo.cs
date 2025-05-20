@@ -32,7 +32,7 @@ namespace E_Vita_APIs.Repositories
             return await _context.Prescriptions
                 .Include(p => p.Patient)
                 .Include(p => p.Practitioner)
-                .Include(p => p.Medication)
+                .Include(p => p.Medications)
                 .Include(p => p.Labtest)
                 .ToListAsync();
         }
@@ -44,7 +44,7 @@ namespace E_Vita_APIs.Repositories
                 return await _context.Prescriptions
                     .Include(p => p.Patient)
                     .Include(p => p.Practitioner)
-                    .Include(p => p.Medication)
+                    .Include(p => p.Medications)
                     .Include(p => p.Labtest)
                     .FirstOrDefaultAsync(p => p.Id == id); 
             }
@@ -64,13 +64,13 @@ namespace E_Vita_APIs.Repositories
             }
 
             prescription.ReasonForVisit = updatedPrescription.ReasonForVisit;
-            prescription.Medication = updatedPrescription.Medication;
+            prescription.Medications = updatedPrescription.Medications;
             prescription.Diseases = updatedPrescription.Diseases;
             prescription.Labtest = updatedPrescription.Labtest;
             prescription.RadiologyTest = updatedPrescription.RadiologyTest;
             prescription.Examination = updatedPrescription.Examination;
             prescription.Reserve = updatedPrescription.Reserve;
-            prescription.sergery = updatedPrescription.sergery;
+            prescription.Surgery = updatedPrescription.Surgery;
             prescription.PatientId = updatedPrescription.PatientId;
             prescription.PractitionerID = updatedPrescription.PractitionerID;
 

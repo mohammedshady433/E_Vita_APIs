@@ -4,6 +4,7 @@ using E_Vita_APIs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Vita_APIs.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    partial class DBcontextModelSnapshot : ModelSnapshot
+    [Migration("20250520003612_prescriptionModification3")]
+    partial class prescriptionModification3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -282,9 +285,8 @@ namespace E_Vita_APIs.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Dose")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<float>("Dose")
+                        .HasColumnType("float");
 
                     b.Property<string>("MedID")
                         .IsRequired()
@@ -300,7 +302,7 @@ namespace E_Vita_APIs.Migrations
                     b.Property<int>("PractitionerID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PrescriptionId")
+                    b.Property<int>("PrescriptionId")
                         .HasColumnType("int");
 
                     b.Property<TimeOnly>("Time")
@@ -497,7 +499,7 @@ namespace E_Vita_APIs.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("LabtestId")
+                    b.Property<int>("LabtestId")
                         .HasColumnType("int");
 
                     b.Property<int>("PatientId")
@@ -875,7 +877,9 @@ namespace E_Vita_APIs.Migrations
 
                     b.HasOne("E_Vita_APIs.Models.Prescription", "Prescription")
                         .WithMany("Medications")
-                        .HasForeignKey("PrescriptionId");
+                        .HasForeignKey("PrescriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Patient");
 
@@ -919,7 +923,9 @@ namespace E_Vita_APIs.Migrations
                 {
                     b.HasOne("E_Vita_APIs.Models.Lab", "Labtest")
                         .WithMany()
-                        .HasForeignKey("LabtestId");
+                        .HasForeignKey("LabtestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("E_Vita_APIs.Models.Patient", "Patient")
                         .WithMany()

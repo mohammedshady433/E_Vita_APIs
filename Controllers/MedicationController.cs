@@ -47,7 +47,7 @@ namespace E_Vita_APIs.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] Medication updatedMedication)
         {
-            if (id != updatedMedication.Id)
+            if (!id.Equals(updatedMedication.Id) )
                 return BadRequest("ID mismatch.");
 
             try

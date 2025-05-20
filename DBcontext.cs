@@ -78,6 +78,10 @@ namespace E_Vita_APIs
                 .HasOne(ap => ap.Practitioner)
                 .WithMany(p => p.AppointmentPractitioners)
                 .HasForeignKey(ap => ap.PractitionersId);
+            modelBuilder.Entity<Medication>()
+                .HasOne(m => m.Prescription)
+                .WithMany(p => p.Medications)
+                .HasForeignKey(m => m.PrescriptionId);
 
             base.OnModelCreating(modelBuilder); // Call the base method to ensure any additional configurations are applied
         }
