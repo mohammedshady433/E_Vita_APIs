@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Vita_APIs.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20250520002946_prescriptionModification2")]
-    partial class prescriptionModification2
+    [Migration("20250523203617_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -285,8 +285,9 @@ namespace E_Vita_APIs.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<float>("Dose")
-                        .HasColumnType("float");
+                    b.Property<string>("Dose")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("MedID")
                         .IsRequired()
@@ -302,7 +303,7 @@ namespace E_Vita_APIs.Migrations
                     b.Property<int>("PractitionerID")
                         .HasColumnType("int");
 
-                    b.Property<int>("PrescriptionId")
+                    b.Property<int?>("PrescriptionId")
                         .HasColumnType("int");
 
                     b.Property<TimeOnly>("Time")
@@ -458,21 +459,25 @@ namespace E_Vita_APIs.Migrations
                     b.Property<int>("PractitionerId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Availability")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateOnly>("Period")
-                        .HasColumnType("date");
+                    b.Property<string>("DayOfWeek")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time(6)");
 
                     b.Property<int>("Service")
                         .HasColumnType("int");
 
                     b.Property<int>("Specialty")
                         .HasColumnType("int");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time(6)");
 
                     b.HasKey("PractitionerId");
 
@@ -499,7 +504,7 @@ namespace E_Vita_APIs.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("LabtestId")
+                    b.Property<int?>("LabtestId")
                         .HasColumnType("int");
 
                     b.Property<int>("PatientId")
@@ -628,7 +633,10 @@ namespace E_Vita_APIs.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("BedId")
+                    b.Property<int?>("BedId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DoctorId")
                         .HasColumnType("int");
 
                     b.Property<int>("Floor")
@@ -638,7 +646,13 @@ namespace E_Vita_APIs.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("NurseId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PractitionerId")
                         .HasColumnType("int");
 
                     b.Property<int>("availablity")
@@ -649,6 +663,8 @@ namespace E_Vita_APIs.Migrations
                     b.HasIndex("BedId");
 
                     b.HasIndex("PatientId");
+
+                    b.HasIndex("PractitionerId");
 
                     b.ToTable("Rooms");
                 });
@@ -877,9 +893,7 @@ namespace E_Vita_APIs.Migrations
 
                     b.HasOne("E_Vita_APIs.Models.Prescription", "Prescription")
                         .WithMany("Medications")
-                        .HasForeignKey("PrescriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PrescriptionId");
 
                     b.Navigation("Patient");
 
@@ -923,9 +937,7 @@ namespace E_Vita_APIs.Migrations
                 {
                     b.HasOne("E_Vita_APIs.Models.Lab", "Labtest")
                         .WithMany()
-                        .HasForeignKey("LabtestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LabtestId");
 
                     b.HasOne("E_Vita_APIs.Models.Patient", "Patient")
                         .WithMany()
@@ -991,9 +1003,7 @@ namespace E_Vita_APIs.Migrations
                 {
                     b.HasOne("E_Vita_APIs.Models.Bed", "Bed")
                         .WithMany()
-                        .HasForeignKey("BedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BedId");
 
                     b.HasOne("E_Vita_APIs.Models.Patient", "Patient")
                         .WithMany()
@@ -1001,9 +1011,15 @@ namespace E_Vita_APIs.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("E_Vita_APIs.Models.Practitioner", "Practitioner")
+                        .WithMany()
+                        .HasForeignKey("PractitionerId");
+
                     b.Navigation("Bed");
 
                     b.Navigation("Patient");
+
+                    b.Navigation("Practitioner");
                 });
 
             modelBuilder.Entity("E_Vita_APIs.Models.Scheduale", b =>

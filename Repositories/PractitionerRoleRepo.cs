@@ -57,11 +57,12 @@ namespace E_Vita_APIs.Repositories
                 throw new ArgumentException("Practitioner role record not found");
             }
 
-            practitionerRole.Period = updatedPractitionerRole.Period;
+            practitionerRole.StartTime = updatedPractitionerRole.StartTime;
+            practitionerRole.EndTime = updatedPractitionerRole.EndTime;
             practitionerRole.Code = updatedPractitionerRole.Code;
             practitionerRole.Specialty = updatedPractitionerRole.Specialty;
             practitionerRole.Service = updatedPractitionerRole.Service;
-            practitionerRole.Availability = updatedPractitionerRole.Availability;
+            practitionerRole.DayOfWeek = updatedPractitionerRole.DayOfWeek;
             practitionerRole.PractitionerId = updatedPractitionerRole.PractitionerId;
 
             await _context.SaveChangesAsync();

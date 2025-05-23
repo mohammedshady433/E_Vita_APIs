@@ -119,12 +119,14 @@ namespace E_Vita_APIs.Migrations
                 columns: table => new
                 {
                     PractitionerId = table.Column<int>(type: "int", nullable: false),
-                    Period = table.Column<DateOnly>(type: "date", nullable: false),
                     Code = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Specialty = table.Column<int>(type: "int", nullable: false),
                     Service = table.Column<int>(type: "int", nullable: false),
-                    Availability = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    DayOfWeek = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    StartTime = table.Column<TimeSpan>(type: "time(6)", nullable: false),
+                    EndTime = table.Column<TimeSpan>(type: "time(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -382,37 +384,6 @@ namespace E_Vita_APIs.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Medications",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Dose = table.Column<float>(type: "float", nullable: false),
-                    Time = table.Column<TimeOnly>(type: "time(6)", nullable: false),
-                    Medication_name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    PractitionerID = table.Column<int>(type: "int", nullable: false),
-                    PatientId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Medications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Medications_Patients_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "Patients",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Medications_Practitioners_PractitionerID",
-                        column: x => x.PractitionerID,
-                        principalTable: "Practitioners",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "PatientPractitioner",
                 columns: table => new
                 {
@@ -431,6 +402,56 @@ namespace E_Vita_APIs.Migrations
                     table.ForeignKey(
                         name: "FK_PatientPractitioner_Practitioners_PractitionersId",
                         column: x => x.PractitionersId,
+                        principalTable: "Practitioners",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Prescriptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ReasonForVisit = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Diseases = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LabtestId = table.Column<int>(type: "int", nullable: true),
+                    LabTest = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    patientcomplaint = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    RadiologyTest = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Examination = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Reserve = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Surgery = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    familyHistory = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PatientId = table.Column<int>(type: "int", nullable: false),
+                    PractitionerID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Prescriptions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Prescriptions_Labs_LabtestId",
+                        column: x => x.LabtestId,
+                        principalTable: "Labs",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Prescriptions_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Prescriptions_Practitioners_PractitionerID",
+                        column: x => x.PractitionerID,
                         principalTable: "Practitioners",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -503,8 +524,11 @@ namespace E_Vita_APIs.Migrations
                     Floor = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    NurseId = table.Column<int>(type: "int", nullable: true),
+                    DoctorId = table.Column<int>(type: "int", nullable: true),
+                    PractitionerId = table.Column<int>(type: "int", nullable: true),
                     PatientId = table.Column<int>(type: "int", nullable: false),
-                    BedId = table.Column<int>(type: "int", nullable: false)
+                    BedId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -513,14 +537,18 @@ namespace E_Vita_APIs.Migrations
                         name: "FK_Rooms_Beds_BedId",
                         column: x => x.BedId,
                         principalTable: "Beds",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Rooms_Patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patients",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Rooms_Practitioners_PractitionerId",
+                        column: x => x.PractitionerId,
+                        principalTable: "Practitioners",
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -573,55 +601,44 @@ namespace E_Vita_APIs.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Prescriptions",
+                name: "Medications",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ReasonForVisit = table.Column<string>(type: "longtext", nullable: false)
+                    MedID = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    MedicationId = table.Column<int>(type: "int", nullable: false),
+                    ActiveIngrediant = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Dose = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Time = table.Column<TimeOnly>(type: "time(6)", nullable: false),
                     Medication_name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Diseases = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    LabtestId = table.Column<int>(type: "int", nullable: false),
-                    RadiologyTest = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Examination = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Reserve = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    sergery = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    PractitionerID = table.Column<int>(type: "int", nullable: false),
                     PatientId = table.Column<int>(type: "int", nullable: false),
-                    PractitionerID = table.Column<int>(type: "int", nullable: false)
+                    PrescriptionId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Prescriptions", x => x.Id);
+                    table.PrimaryKey("PK_Medications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Prescriptions_Labs_LabtestId",
-                        column: x => x.LabtestId,
-                        principalTable: "Labs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Prescriptions_Medications_MedicationId",
-                        column: x => x.MedicationId,
-                        principalTable: "Medications",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Prescriptions_Patients_PatientId",
+                        name: "FK_Medications_Patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patients",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Prescriptions_Practitioners_PractitionerID",
+                        name: "FK_Medications_Practitioners_PractitionerID",
                         column: x => x.PractitionerID,
                         principalTable: "Practitioners",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Medications_Prescriptions_PrescriptionId",
+                        column: x => x.PrescriptionId,
+                        principalTable: "Prescriptions",
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -719,6 +736,11 @@ namespace E_Vita_APIs.Migrations
                 column: "PractitionerID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Medications_PrescriptionId",
+                table: "Medications",
+                column: "PrescriptionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Operation_RoomPractitioner_operation_RoomsRoomId",
                 table: "Operation_RoomPractitioner",
                 column: "operation_RoomsRoomId");
@@ -737,11 +759,6 @@ namespace E_Vita_APIs.Migrations
                 name: "IX_Prescriptions_LabtestId",
                 table: "Prescriptions",
                 column: "LabtestId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Prescriptions_MedicationId",
-                table: "Prescriptions",
-                column: "MedicationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Prescriptions_PatientId",
@@ -777,6 +794,11 @@ namespace E_Vita_APIs.Migrations
                 name: "IX_Rooms_PatientId",
                 table: "Rooms",
                 column: "PatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rooms_PractitionerId",
+                table: "Rooms",
+                column: "PractitionerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_scheduales_AppointmentId",
@@ -816,6 +838,9 @@ namespace E_Vita_APIs.Migrations
                 name: "Financials");
 
             migrationBuilder.DropTable(
+                name: "Medications");
+
+            migrationBuilder.DropTable(
                 name: "Operation_RoomPractitioner");
 
             migrationBuilder.DropTable(
@@ -823,9 +848,6 @@ namespace E_Vita_APIs.Migrations
 
             migrationBuilder.DropTable(
                 name: "Practitioners_Role");
-
-            migrationBuilder.DropTable(
-                name: "Prescriptions");
 
             migrationBuilder.DropTable(
                 name: "Quantities");
@@ -843,19 +865,19 @@ namespace E_Vita_APIs.Migrations
                 name: "SharedNotes");
 
             migrationBuilder.DropTable(
-                name: "Operation_Rooms");
+                name: "Prescriptions");
 
             migrationBuilder.DropTable(
-                name: "Medications");
+                name: "Operation_Rooms");
 
             migrationBuilder.DropTable(
                 name: "observation_Vitals");
 
             migrationBuilder.DropTable(
-                name: "Labs");
+                name: "Appointments");
 
             migrationBuilder.DropTable(
-                name: "Appointments");
+                name: "Labs");
 
             migrationBuilder.DropTable(
                 name: "Rooms");
