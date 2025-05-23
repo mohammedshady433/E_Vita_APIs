@@ -7,10 +7,11 @@ namespace E_Vita_APIs.Models
     {
         public int ID { get; set; }
         public RoomStatus availablity { get; set; }
-        public int Floor { get; set; }
+        public int RoomNumber { get; set; }
         public string Name { get; set; }
-        public int? NurseId { get; set; }
-        public int? DoctorId { get; set; }
+        public int NurseId { get; set; }
+        public int DoctorId { get; set; }
+        [ForeignKey("DoctorId")]
         public Practitioner? Practitioner { get; set; }
         public int PatientId { get; set; } // FK property
 
