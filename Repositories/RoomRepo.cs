@@ -60,7 +60,7 @@ namespace E_Vita_APIs.Repositories
             }
 
             room.availablity = updatedRoom.availablity;
-            room.Floor = updatedRoom.Floor;
+            room.RoomNumber = updatedRoom.RoomNumber;
             room.Name = updatedRoom.Name;
             room.PatientId = updatedRoom.PatientId;
             await _context.SaveChangesAsync();

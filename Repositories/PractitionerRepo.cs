@@ -63,8 +63,6 @@ namespace E_Vita_APIs.Repositories
             practitioner.Phone = updatedPractitioner.Phone;
             practitioner.Email = updatedPractitioner.Email;
             practitioner.Address = updatedPractitioner.Address;
-            practitioner.Gender = updatedPractitioner.Gender;
-            practitioner.DateOfBirth = updatedPractitioner.DateOfBirth;
 
             await _context.SaveChangesAsync();
         }

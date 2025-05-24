@@ -6,10 +6,10 @@ namespace E_Vita_APIs.Models
     {
         public int AppointmentId { get; set; }
         [JsonIgnore]
-        public Appointment Appointment { get; set; }
+        public Appointment? Appointment { get; set; }
 
         public int PractitionersId { get; set; }
         [JsonIgnore]
-        public Practitioner Practitioner { get; set; }
+        public Practitioner? Practitioner { get; set; }
     }
 }
