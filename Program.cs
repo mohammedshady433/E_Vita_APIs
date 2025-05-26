@@ -33,6 +33,7 @@ builder.Services.AddScoped<IRepositories<Practitioner_Role>, PractitionerRoleRep
 builder.Services.AddScoped<IRepositories<Prescription>, PrescriptionRepo>();
 builder.Services.AddScoped<IRepositories<Quantity>, QuantityRepo>();
 builder.Services.AddScoped<IRepositories<Radiology>, RadiologyRepo>();
+builder.Services.AddScoped<RadiologyRepo>();
 builder.Services.AddScoped<IRepositories<E_Vita_APIs.Models.Results>, ResultsRepo>();
 builder.Services.AddScoped<IRepositories<Room>, RoomRepo>();
 builder.Services.AddScoped<IRepositories<Scheduale>, ScheduleRepo>();

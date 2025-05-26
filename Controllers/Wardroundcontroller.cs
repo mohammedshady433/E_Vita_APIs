@@ -40,11 +40,11 @@ namespace E_Vita_APIs.Controllers
         public async Task<ActionResult<WardRound>> CreateWardRound(WardRound wardRound)
         {
             await _context.AddAsync(wardRound);
-            return Ok(wardRound);
+            return Ok(wardRound.Id);
         }
 
 
-        
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWardRound(int id)

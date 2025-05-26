@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Vita_APIs.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20250524215837_AlotofModifications2")]
-    partial class AlotofModifications2
+    [Migration("20250524223041_PractRole2")]
+    partial class PractRole2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -477,7 +477,12 @@ namespace E_Vita_APIs.Migrations
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time(6)");
 
+                    b.Property<int?>("practitionerRolePractitionerId")
+                        .HasColumnType("int");
+
                     b.HasKey("PractitionerId");
+
+                    b.HasIndex("practitionerRolePractitionerId");
 
                     b.ToTable("Practitioners_Role");
                 });
@@ -925,7 +930,13 @@ namespace E_Vita_APIs.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("E_Vita_APIs.Models.Practitioner_Role", "practitionerRole")
+                        .WithMany()
+                        .HasForeignKey("practitionerRolePractitionerId");
+
                     b.Navigation("Practitioner");
+
+                    b.Navigation("practitionerRole");
                 });
 
             modelBuilder.Entity("E_Vita_APIs.Models.Prescription", b =>

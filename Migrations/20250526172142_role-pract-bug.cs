@@ -5,7 +5,7 @@
 namespace E_Vita_APIs.Migrations
 {
     /// <inheritdoc />
-    public partial class appointmentPractitionerTableEdit : Migration
+    public partial class rolepractbug : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -78,14 +78,14 @@ namespace E_Vita_APIs.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Phone = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    Rank = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Address = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Gender = table.Column<int>(type: "int", nullable: false),
                     PasswordHash = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -521,12 +521,11 @@ namespace E_Vita_APIs.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     availablity = table.Column<int>(type: "int", nullable: false),
-                    Floor = table.Column<int>(type: "int", nullable: false),
+                    RoomNumber = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    NurseId = table.Column<int>(type: "int", nullable: true),
-                    DoctorId = table.Column<int>(type: "int", nullable: true),
-                    PractitionerId = table.Column<int>(type: "int", nullable: true),
+                    NurseId = table.Column<int>(type: "int", nullable: false),
+                    DoctorId = table.Column<int>(type: "int", nullable: false),
                     PatientId = table.Column<int>(type: "int", nullable: false),
                     BedId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -545,10 +544,11 @@ namespace E_Vita_APIs.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Rooms_Practitioners_PractitionerId",
-                        column: x => x.PractitionerId,
+                        name: "FK_Rooms_Practitioners_DoctorId",
+                        column: x => x.DoctorId,
                         principalTable: "Practitioners",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -791,14 +791,14 @@ namespace E_Vita_APIs.Migrations
                 column: "BedId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Rooms_DoctorId",
+                table: "Rooms",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Rooms_PatientId",
                 table: "Rooms",
                 column: "PatientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rooms_PractitionerId",
-                table: "Rooms",
-                column: "PractitionerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_scheduales_AppointmentId",

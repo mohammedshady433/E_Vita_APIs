@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Vita_APIs.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20250524213620_AlotofModifications")]
-    partial class AlotofModifications
+    [Migration("20250524223326_PractRole3")]
+    partial class PractRole3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -476,6 +476,9 @@ namespace E_Vita_APIs.Migrations
 
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time(6)");
+
+                    b.Property<int?>("practitionerRole")
+                        .HasColumnType("int");
 
                     b.HasKey("PractitionerId");
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Vita_APIs.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20250523203617_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250525011806_SharedNote")]
+    partial class SharedNote
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -427,15 +427,9 @@ namespace E_Vita_APIs.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -446,6 +440,10 @@ namespace E_Vita_APIs.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Rank")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -636,23 +634,20 @@ namespace E_Vita_APIs.Migrations
                     b.Property<int?>("BedId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DoctorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Floor")
+                    b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("NurseId")
+                    b.Property<int>("NurseId")
                         .HasColumnType("int");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PractitionerId")
+                    b.Property<int>("RoomNumber")
                         .HasColumnType("int");
 
                     b.Property<int>("availablity")
@@ -662,9 +657,9 @@ namespace E_Vita_APIs.Migrations
 
                     b.HasIndex("BedId");
 
-                    b.HasIndex("PatientId");
+                    b.HasIndex("DoctorId");
 
-                    b.HasIndex("PractitionerId");
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Rooms");
                 });
@@ -1005,15 +1000,17 @@ namespace E_Vita_APIs.Migrations
                         .WithMany()
                         .HasForeignKey("BedId");
 
+                    b.HasOne("E_Vita_APIs.Models.Practitioner", "Practitioner")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("E_Vita_APIs.Models.Patient", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("E_Vita_APIs.Models.Practitioner", "Practitioner")
-                        .WithMany()
-                        .HasForeignKey("PractitionerId");
 
                     b.Navigation("Bed");
 
