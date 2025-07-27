@@ -5,6 +5,10 @@ namespace E_Vita_APIs
 {
     public class DBcontext : DbContext
     {
+        public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<Finance> Finances { get; set; }
+        public DbSet<Days> Days { get; set; }
+
         public DbSet<Practitioner> Practitioners { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Medication> Medications { get; set; }
@@ -16,7 +20,7 @@ namespace E_Vita_APIs
         public DbSet<Prescription> Prescriptions { get; set; }
         public DbSet<Observation_Vital> observation_Vitals { get; set; }
         public DbSet<SharedNote> SharedNotes { get; set; }
-        public DbSet<Financial> Financials { get; set; }
+      
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Bed> Beds { get; set; }
         public DbSet<Scheduale> scheduales { get; set; }
