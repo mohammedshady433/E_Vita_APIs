@@ -8,66 +8,59 @@ namespace E_Vita_APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SharednotesController : ControllerBase
+    public class SharedNotesController : ControllerBase
     {
-        private readonly IRepositories<SharedNote> _context;
-        public SharednotesController(IRepositories<SharedNote> context)
+        private readonly ISharedNoteRepository _repository;
+        public SharedNotesController(ISharedNoteRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SharedNote>>> GetAllSharedNotes()
+        public async Task<IActionResult> GetAll()
         {
-            var sharedNotes = await _context.GetAllAsync();
-            return Ok(sharedNotes);
+            var items = await _repository.GetSharedNotes();
+            return Ok(items);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<SharedNote>> GetSharedNote(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var sharedNote = await _context.GetByIdAsync(id);
-            if (sharedNote == null)
-            {
-                return NotFound();
-            }
+            var item = await _repository.GetSharedNote(id);
+            if (item == null) return NotFound();
+            return Ok(item);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] SharedNote sharedNote)
+        {
+            await _repository.AddSharedNote(sharedNote);
             return Ok(sharedNote);
         }
 
-
-        [HttpPost]
-        public async Task<ActionResult<SharedNote>> CreateSharedNote(SharedNote sharedNote)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] SharedNote sharedNote)
         {
-            await _context.AddAsync(sharedNote);
-            return Ok();
-        }
-
-
-
-
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSharedNote(int id)
-        {
-            var sharedNote = await _context.GetByIdAsync(id);
-            if (sharedNote == null)
-            {
-                return NotFound();
-            }
-            await _context.DeleteAsync(id);
+            if (id != sharedNote.Note_ID) return BadRequest();
+            await _repository.UpdateSharedNote(sharedNote);
             return NoContent();
         }
 
-       
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _repository.DeleteSharedNote(id);
+            return NoContent();
+        }
 
         [HttpGet("practitioner/{practitionerId}")]
-        public async Task<ActionResult<IEnumerable<SharedNote>>> GetSharedNotesByPractitioner(int practitionerId)
+        public async Task<IActionResult> GetByPractitioner(int practitionerId)
         {
-            var allSharedNotes = await _context.GetAllAsync();
+            var allSharedNotes = await _repository.GetSharedNotes();
             var sharedNotes = allSharedNotes
-                .Where(sn => sn.PractitionerID == practitionerId)
+                .Where(sn => sn.practitionerID == practitionerId)
                 .ToList();
-            if (sharedNotes == null || !sharedNotes.Any())
+            if (!sharedNotes.Any())
             {
                 return NotFound();
             }
