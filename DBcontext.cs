@@ -8,8 +8,9 @@ namespace E_Vita_APIs
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<Finance> Finances { get; set; }
         public DbSet<Days> Days { get; set; }
-
-        public DbSet<Practitioner> Practitioners { get; set; }
+        public DbSet<Accountant> Accountants { get; set; }
+        public DbSet<Lab_technician> Lab_Technicians { get; set; }
+        public DbSet<Rad_technician> Rad_Technicians { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Medication> Medications { get; set; }
         public DbSet<Encounter> Encounters { get; set; }
