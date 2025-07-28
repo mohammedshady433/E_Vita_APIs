@@ -35,6 +35,12 @@ namespace E_Vita_APIs
         public DbSet<AppointmentPractitioner> AppointmentPractitioners { get; set; }
         public DbSet<Share> Shares { get; set; }
 
+        public DbSet<User> Users { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Nurse> Nurses { get; set; }
+        public DbSet<Receptionist> Receptionists { get; set; }
+
+
         public DBcontext(DbContextOptions options) : base(options)
         {
 
