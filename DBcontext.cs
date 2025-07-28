@@ -28,6 +28,7 @@ namespace E_Vita_APIs
         public DbSet<Radiology> Radiologies { get; set; }
         public DbSet<Practitioner_Role> Practitioners_Role { get; set; }
         public DbSet<AppointmentPractitioner> AppointmentPractitioners { get; set; }
+        public DbSet<Share> Shares { get; set; }
 
         public DBcontext(DbContextOptions options) : base(options)
         {

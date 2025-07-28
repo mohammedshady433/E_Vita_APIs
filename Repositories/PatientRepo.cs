@@ -31,10 +31,13 @@ namespace E_Vita_APIs.Repositories
         }
         public async Task<Patient> GetByIdAsync(int id)
         {
-            try { return await _context.Patients.FindAsync(id); }
+            try 
+            {
+                return await _context.Patients.FindAsync(id);
+            }
             catch
             {
-                return new Patient(); ;
+                return new Patient();
             }
         }
         public async Task UpdateAsync(Patient updatedPatient, int id)
@@ -49,14 +52,12 @@ namespace E_Vita_APIs.Repositories
 
             // Update the properties of the retrieved patient with the new data
             patient.Status = updatedPatient.Status;
-            patient.Results = updatedPatient.Results;
+            patient.password = updatedPatient.password;
             patient.Address = updatedPatient.Address;
             patient.DateOfBirth = updatedPatient.DateOfBirth;
             patient.Name = updatedPatient.Name;
             patient.Phone = updatedPatient.Phone;
             patient.Email = updatedPatient.Email;
-            patient.Practitioners = updatedPatient.Practitioners;
-            patient.WardRoundId = updatedPatient.WardRoundId;
             patient.Gender = updatedPatient.Gender;
 
             await _context.SaveChangesAsync();

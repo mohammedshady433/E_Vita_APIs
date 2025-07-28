@@ -17,7 +17,7 @@ namespace E_Vita_APIs.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             var medication = await _context.Medications.FindAsync(id);
             if (medication != null)
@@ -31,17 +31,15 @@ namespace E_Vita_APIs.Repositories
         {
             return await _context.Medications
                 .Include(m => m.Patient)
-                .Include(m => m.Practitioner)
                 .ToListAsync();
         }
 
-        public async Task<Medication> GetByIdAsync(int id)
+        public async Task<Medication> GetByIdAsync(string id)
         {
             try 
             { 
                 return await _context.Medications
                     .Include(m => m.Patient)
-                    .Include(m => m.Practitioner)
                     .FirstOrDefaultAsync(m => m.Id.Equals(id) );
             }
             catch
@@ -50,7 +48,7 @@ namespace E_Vita_APIs.Repositories
             }
         }
 
-        public async Task UpdateAsync(Medication updatedMedication, int id)
+        public async Task UpdateAsync(Medication updatedMedication, string id)
         {
             var medication = await _context.Medications.FindAsync(id);
 
@@ -59,10 +57,10 @@ namespace E_Vita_APIs.Repositories
                 throw new ArgumentException("Medication record not found");
             }
 
-            medication.Dose = updatedMedication.Dose;
-            medication.Time = updatedMedication.Time;
-            medication.Medication_name = updatedMedication.Medication_name;
-            medication.PractitionerID = updatedMedication.PractitionerID;
+            medication.Name = updatedMedication.Name;
+            medication.Dosage = updatedMedication.Dosage;
+            medication.Active_site = updatedMedication.Active_site;
+            medication.Date = updatedMedication.Date;
             medication.PatientId = updatedMedication.PatientId;
 
             await _context.SaveChangesAsync();

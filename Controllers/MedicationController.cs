@@ -26,7 +26,7 @@ namespace E_Vita_APIs.Controllers
 
         // GET: api/medications/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Medication>> GetById(int id)
+        public async Task<ActionResult<Medication>> GetById(string id)
         {
             var med = await _repo.GetByIdAsync(id);
             if (med == null ) return NotFound("Medication not found.");
@@ -45,7 +45,7 @@ namespace E_Vita_APIs.Controllers
 
         // PUT: api/medications/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, [FromBody] Medication updatedMedication)
+        public async Task<ActionResult> Update(string id, [FromBody] Medication updatedMedication)
         {
             if (!id.Equals(updatedMedication.Id) )
                 return BadRequest("ID mismatch.");
@@ -65,7 +65,7 @@ namespace E_Vita_APIs.Controllers
 
         // DELETE: api/medications/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(string id)
         {
             await _repo.DeleteAsync(id);
             return Ok();

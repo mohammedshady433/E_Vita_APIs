@@ -17,7 +17,7 @@ namespace E_Vita_APIs.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             var appointment = await _context.Appointments.FindAsync(id);
             if (appointment != null)
@@ -34,13 +34,13 @@ namespace E_Vita_APIs.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Appointment> GetByIdAsync(int id)
+        public async Task<Appointment> GetByIdAsync(string id)
         {
             try 
             { 
                 return await _context.Appointments
                     .Include(a => a.Patient)
-                    .FirstOrDefaultAsync(a => a.Id == id); 
+                    .FirstOrDefaultAsync(a => a.Id.Equals(id)); 
             }
             catch
             {
@@ -48,7 +48,7 @@ namespace E_Vita_APIs.Repositories
             }
         }
 
-        public async Task UpdateAsync(Appointment updatedAppointment, int id)
+        public async Task UpdateAsync(Appointment updatedAppointment, string id)
         {
             var appointment = await _context.Appointments.FindAsync(id);
 
@@ -63,8 +63,6 @@ namespace E_Vita_APIs.Repositories
             appointment.Cancelation_Reason = updatedAppointment.Cancelation_Reason;
             appointment.Cancelation_Date = updatedAppointment.Cancelation_Date;
             appointment.Service_Type = updatedAppointment.Service_Type;
-            appointment.Duration = updatedAppointment.Duration;
-            appointment.Actor = updatedAppointment.Actor;
             appointment.PatientId = updatedAppointment.PatientId;
 
             await _context.SaveChangesAsync();

@@ -6,31 +6,27 @@ namespace E_Vita_APIs.Models
 {
     public class Patient
     {
-        public int ID { get; set; }
+        public string ID { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public string? Nationality { get; set; }
-
         public string Address { get; set; }
         public OUTIN_Patient Status { get; set; }
         public DateTime DateOfBirth { get; set; }
         public Gender Gender { get; set; }
-        [JsonIgnore]
-        public ICollection<Practitioner> Practitioners { get; set; } = new List<Practitioner>();
-        public int? WardRoundId { get; set; }
-        [ForeignKey("WardRoundId")]
-        [JsonIgnore]
-        public WardRound? WardRound { get; set; } // Navigation property   
-        [JsonIgnore]
-        public ICollection<Results>? Results { get; set; }
+        public string password { get; set; }
 
+        // FK to the financial table
+        public Financial Financial { get; set; }
+        public string FinancialId { get; set; }
 
     }
     public enum OUTIN_Patient
     {
         Out_Patient=0,
-        In_Patient = 1
+        In_Patient = 1,
+        Dismissed = 2   
     }
     public enum Gender
     {
