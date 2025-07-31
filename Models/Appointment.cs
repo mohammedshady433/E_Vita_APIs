@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-
+// last edit: 31/7/2025
 namespace E_Vita_APIs.Models
 {
     public class Appointment
@@ -9,7 +9,6 @@ namespace E_Vita_APIs.Models
         public TimeOnly Start { get; set; }
         public TimeOnly End { get; set; }
         public AppointmentStatus Status { get; set; }
-        public string? Cancelation_Reason { get; set; }
         public DateTime? Cancelation_Date { get; set; }
         public ServiceType Service_Type { get; set; }
         public string PatientId { get; set; } // FK property

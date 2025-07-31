@@ -1,20 +1,15 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+//// last edit: 31/7/2025
 namespace E_Vita_APIs.Models
 {
-    public class Doctor
+    public class Doctor : User
     {
-        [Key]
-        public string Doctor_ID { get; set; }
-        public decimal Salary { get; set; }
         public string Rank { get; set; }
         public string Speciality { get; set; }
-        public string ChatId { get; set; }
+        public string? Screentime { get; set; }
 
-        [ForeignKey("ChatId")]
-        public Chatbot chatbot { get; set; }
-
-
+        [ForeignKey("Screentime")]
+        public ScreentimeArticle screentime { get; set; }
     }
 } 

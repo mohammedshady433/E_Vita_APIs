@@ -3,7 +3,7 @@
     public class Days
     {
        
-            public int Days_ID { get; set; }
+            public string Days_ID { get; set; }
             public string DayName { get; set; }
 
             // Navigation property for the relationship with Schedule

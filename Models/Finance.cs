@@ -2,7 +2,7 @@
 {
     public class Finance
     {
-            public int Finance_ID { get; set; }
+            public string Finance_ID { get; set; }
             public decimal Salaries { get; set; }
             public decimal Appointment_Income { get; set; }
             public decimal RoomReservation_Income { get; set; }
