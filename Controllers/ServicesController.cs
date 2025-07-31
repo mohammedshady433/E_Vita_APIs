@@ -1,6 +1,7 @@
 using E_Vita_APIs.Models;
 using E_Vita_APIs.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace E_Vita_APIs.Controllers
@@ -9,42 +10,70 @@ namespace E_Vita_APIs.Controllers
     [ApiController]
     public class ServicesController : ControllerBase
     {
-        private readonly IServiceRepository _repository;
-        public ServicesController(IServiceRepository repository)
+        private readonly IRepositories<Service> _repo;
+
+        public ServicesController(IRepositories<Service> repo)
         {
-            _repository = repository;
+            _repo = repo;
         }
+
+        // GET: api/Services
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<Service>>> GetAll()
         {
-            var items = await _repository.GetServices();
-            return Ok(items);
+            var services = await _repo.GetAllAsync();
+            return Ok(services);
         }
+
+        // GET: api/Services/{id}
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<ActionResult<Service>> GetById(string id)
         {
-            var item = await _repository.GetService(id);
-            if (item == null) return NotFound();
-            return Ok(item);
-        }
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Service service)
-        {
-            await _repository.AddService(service);
+            var service = await _repo.GetByIdAsync(id);
+            if (service == null)
+                return NotFound();
             return Ok(service);
         }
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Service service)
+
+        // POST: api/Services
+        [HttpPost]
+        public async Task<ActionResult> Create([FromBody] Service service)
         {
-            if (id != service.Service_ID) return BadRequest();
-            await _repository.UpdateService(service);
-            return NoContent();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _repo.AddAsync(service);
+            return Ok(service);
         }
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+
+        // PUT: api/Services/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id, [FromBody] Service service)
         {
-            await _repository.DeleteService(id);
-            return NoContent();
+            if (!id.Equals(service.Service_ID))
+                return BadRequest("ID mismatch.");
+
+            try
+            {
+                await _repo.UpdateAsync(service, id);
+                return Ok("Service updated successfully.");
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        // DELETE: api/Services/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var service = await _repo.GetByIdAsync(id);
+            if (service == null)
+                return NotFound();
+
+            await _repo.DeleteAsync(id);
+            return Ok("Service deleted successfully.");
         }
     }
 }

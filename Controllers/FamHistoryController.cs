@@ -9,9 +9,9 @@ namespace E_Vita_APIs.Controllers
     [ApiController]
     public class FamHistoryController : ControllerBase
     {
-        private readonly IRepositories<FamHistory> _repo;
+        private readonly IRepositories<FamilyHistory> _repo;
 
-        public FamHistoryController(IRepositories<FamHistory> repo)
+        public FamHistoryController(IRepositories<FamilyHistory> repo)
         {
             _repo = repo;
         }
@@ -19,28 +19,28 @@ namespace E_Vita_APIs.Controllers
         public async Task<IActionResult> GetAll() => Ok(await _repo.GetAllAsync());
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(string id)
         {
             var record = await _repo.GetByIdAsync(id);
             return record == null ? NotFound() : Ok(record);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] FamHistory famHistory)
+        public async Task<IActionResult> Create([FromBody] FamilyHistory famHistory)
         {
             await _repo.AddAsync(famHistory);
             return Ok();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] FamHistory updated)
+        public async Task<IActionResult> Update(string id, [FromBody] FamilyHistory updated)
         {
             await _repo.UpdateAsync(updated, id);
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             await _repo.DeleteAsync(id);
             return Ok();

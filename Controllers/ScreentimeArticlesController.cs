@@ -1,6 +1,7 @@
 using E_Vita_APIs.Models;
 using E_Vita_APIs.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace E_Vita_APIs.Controllers
@@ -9,42 +10,70 @@ namespace E_Vita_APIs.Controllers
     [ApiController]
     public class ScreentimeArticlesController : ControllerBase
     {
-        private readonly IScreentimeArticleRepository _repository;
-        public ScreentimeArticlesController(IScreentimeArticleRepository repository)
+        private readonly IRepositories<ScreentimeArticle> _repo;
+
+        public ScreentimeArticlesController(IRepositories<ScreentimeArticle> repo)
         {
-            _repository = repository;
+            _repo = repo;
         }
+
+        // GET: api/ScreentimeArticles
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<ScreentimeArticle>>> GetAll()
         {
-            var items = await _repository.GetScreentimeArticles();
-            return Ok(items);
+            var articles = await _repo.GetAllAsync();
+            return Ok(articles);
         }
+
+        // GET: api/ScreentimeArticles/{id}
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<ActionResult<ScreentimeArticle>> GetById(string id)
         {
-            var item = await _repository.GetScreentimeArticle(id);
-            if (item == null) return NotFound();
-            return Ok(item);
+            var article = await _repo.GetByIdAsync(id);
+            if (article == null)
+                return NotFound();
+            return Ok(article);
         }
+
+        // POST: api/ScreentimeArticles
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ScreentimeArticle screentimeArticle)
+        public async Task<ActionResult> Create([FromBody] ScreentimeArticle article)
         {
-            await _repository.AddScreentimeArticle(screentimeArticle);
-            return Ok(screentimeArticle);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _repo.AddAsync(article);
+            return Ok(article);
         }
+
+        // PUT: api/ScreentimeArticles/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] ScreentimeArticle screentimeArticle)
+        public async Task<IActionResult> Update(string id, [FromBody] ScreentimeArticle article)
         {
-            if (id != screentimeArticle.Chat_ID) return BadRequest();
-            await _repository.UpdateScreentimeArticle(screentimeArticle);
-            return NoContent();
+            if (!id.Equals(article.Chat_ID))
+                return BadRequest("ID mismatch.");
+
+            try
+            {
+                await _repo.UpdateAsync(article, id);
+                return Ok("ScreentimeArticle updated successfully.");
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
+
+        // DELETE: api/ScreentimeArticles/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
-            await _repository.DeleteScreentimeArticle(id);
-            return NoContent();
+            var article = await _repo.GetByIdAsync(id);
+            if (article == null)
+                return NotFound();
+
+            await _repo.DeleteAsync(id);
+            return Ok("ScreentimeArticle deleted successfully.");
         }
     }
 }

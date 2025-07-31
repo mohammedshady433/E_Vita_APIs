@@ -1,8 +1,9 @@
 ﻿using E_Vita_APIs.Models;
 using E_Vita_APIs.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace E_Vita_APIs.Controllers
 {
@@ -10,53 +11,77 @@ namespace E_Vita_APIs.Controllers
     [ApiController]
     public class SharedNotesController : ControllerBase
     {
-        private readonly ISharedNoteRepository _repository;
-        public SharedNotesController(ISharedNoteRepository repository)
+        private readonly IRepositories<SharedNote> _repo;
+
+        public SharedNotesController(IRepositories<SharedNote> repo)
         {
-            _repository = repository;
+            _repo = repo;
         }
 
+        // GET: api/SharedNotes
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<SharedNote>>> GetAll()
         {
-            var items = await _repository.GetSharedNotes();
-            return Ok(items);
+            var notes = await _repo.GetAllAsync();
+            return Ok(notes);
         }
 
+        // GET: api/SharedNotes/{id}
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<ActionResult<SharedNote>> GetById(string id)
         {
-            var item = await _repository.GetSharedNote(id);
-            if (item == null) return NotFound();
-            return Ok(item);
+            var note = await _repo.GetByIdAsync(id);
+            if (note == null)
+                return NotFound();
+            return Ok(note);
         }
 
+        // POST: api/SharedNotes
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] SharedNote sharedNote)
+        public async Task<ActionResult> Create([FromBody] SharedNote note)
         {
-            await _repository.AddSharedNote(sharedNote);
-            return Ok(sharedNote);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _repo.AddAsync(note);
+            return Ok(note);
         }
 
+        // PUT: api/SharedNotes/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] SharedNote sharedNote)
+        public async Task<IActionResult> Update(string id, [FromBody] SharedNote note)
         {
-            if (id != sharedNote.Note_ID) return BadRequest();
-            await _repository.UpdateSharedNote(sharedNote);
-            return NoContent();
+            if (!id.Equals(note.Note_ID))
+                return BadRequest("ID mismatch.");
+
+            try
+            {
+                await _repo.UpdateAsync(note, id);
+                return Ok("SharedNote updated successfully.");
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
+        // DELETE: api/SharedNotes/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
-            await _repository.DeleteSharedNote(id);
-            return NoContent();
+            var note = await _repo.GetByIdAsync(id);
+            if (note == null)
+                return NotFound();
+
+            await _repo.DeleteAsync(id);
+            return Ok("SharedNote deleted successfully.");
         }
 
+        // GET: api/SharedNotes/practitioner/{practitionerId}
         [HttpGet("practitioner/{practitionerId}")]
-        public async Task<IActionResult> GetByPractitioner(int practitionerId)
+        public async Task<IActionResult> GetByPractitioner(string practitionerId)
         {
-            var allSharedNotes = await _repository.GetSharedNotes();
+            var allSharedNotes = await _repo.GetAllAsync();
             var sharedNotes = allSharedNotes
                 .Where(sn => sn.practitionerID == practitionerId)
                 .ToList();
@@ -66,8 +91,5 @@ namespace E_Vita_APIs.Controllers
             }
             return Ok(sharedNotes);
         }
-
-
-
     }
 }

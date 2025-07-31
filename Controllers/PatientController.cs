@@ -27,7 +27,7 @@ namespace E_Vita_APIs.Controllers
 
         // GET: api/Patient/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Patient>> GetPatient(int id)
+        public async Task<ActionResult<Patient>> GetPatient(string id)
         {
             var patient = await _patientRepo.GetByIdAsync(id);
 
@@ -49,7 +49,7 @@ namespace E_Vita_APIs.Controllers
 
         // PUT: api/Patient/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePatient(int id, [FromBody] Patient patient)
+        public async Task<IActionResult> UpdatePatient(string id, [FromBody] Patient patient)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace E_Vita_APIs.Controllers
 
         // DELETE: api/Patient/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePatient(int id)
+        public async Task<IActionResult> DeletePatient(string id)
         {
             await _patientRepo.DeleteAsync(id);
             return Ok();

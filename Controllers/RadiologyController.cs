@@ -21,7 +21,7 @@ namespace E_Vita_APIs.Controllers
             return Ok(radiologies);
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(string id)
         {
             var radiology = await _radiologyRepo.GetByIdAsync(id);
             if (radiology == null)
@@ -41,7 +41,7 @@ namespace E_Vita_APIs.Controllers
             return Ok();
         }
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             var radiology = await _radiologyRepo.GetByIdAsync(id);
             if (radiology == null)

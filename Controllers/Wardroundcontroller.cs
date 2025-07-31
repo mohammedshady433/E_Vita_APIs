@@ -26,7 +26,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<WardRound>> GetWardRound(int id)
+        public async Task<ActionResult<WardRound>> GetWardRound(string id)
         {
             var wardRound = await _context.GetByIdAsync(id);
             if (wardRound == null)
@@ -47,7 +47,7 @@ namespace E_Vita_APIs.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWardRound(int id)
+        public async Task<IActionResult> DeleteWardRound(string id)
         {
             var wardRound = await _context.GetByIdAsync(id);
             if (wardRound == null)

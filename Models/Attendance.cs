@@ -11,7 +11,7 @@ namespace E_Vita_APIs.Models
 
             // Foreign key to users
             [ForeignKey("UserID")]
-            public int UserID { get; set; }
+            public string UserID { get; set; }
 
             public User User { get; set; }
     }

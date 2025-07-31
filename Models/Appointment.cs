@@ -18,7 +18,7 @@ namespace E_Vita_APIs.Models
         public string DoctorId { get; set; } // FK property
 
         [ForeignKey("DoctorId")]
-        public Doctor DoctorID { get; set; } // Navigation property
+        public Doctor Doctor { get; set; } // Navigation property
     }
     public enum AppointmentStatus
     {

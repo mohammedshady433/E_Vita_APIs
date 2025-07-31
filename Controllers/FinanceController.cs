@@ -23,7 +23,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(string id)
         { 
             var finance = await _financeRepo.GetByIdAsync(id);
             if (finance == null)
@@ -40,7 +40,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateFinance(int id, [FromBody] Finance updatedFinance)
+        public async Task<IActionResult> UpdateFinance(string id, [FromBody] Finance updatedFinance)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFinance(int id)
+        public async Task<IActionResult> DeleteFinance(string id)
         {
             await _financeRepo.DeleteAsync(id);
             return Ok();

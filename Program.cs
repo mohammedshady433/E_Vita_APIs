@@ -17,31 +17,34 @@ builder.Services.AddEndpointsApiExplorer(); // Needed for minimal APIs
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IRepositories<Appointment>, AppointmentRepo>();
-builder.Services.AddScoped<IRepositories<Bed>, BedRepo>();
-builder.Services.AddScoped<IRepositories<Contact_fam>, ContactFamRepo>();
-builder.Services.AddScoped<IRepositories<Discharge>, DischargeRepo>();
-builder.Services.AddScoped<IRepositories<Encounter>, EncounterRepo>();
-builder.Services.AddScoped<IRepositories<FamHistory>, FamHistoryRepo>();
-builder.Services.AddScoped<IRepositories<Financial>, FinancialRepo>();
+builder.Services.AddScoped<IRepositories<Accountant>, AccountantRepo>();
+builder.Services.AddScoped<IRepositories<Assigned>, AssignedRepo>();
+builder.Services.AddScoped<IRepositories<Attendance>, AttendanceRepo>();
+builder.Services.AddScoped<IRepositories<Beds>, BedRepo>();
+builder.Services.AddScoped<IRepositories<Days>, DaysRepo>();
+builder.Services.AddScoped<IRepositories<Doctor>, DoctorRepo>();
+builder.Services.AddScoped<IRepositories<FamilyHistory>, FamHistoryRepo>();
+builder.Services.AddScoped<IRepositories<Finance>, FinanceRepo>();
 builder.Services.AddScoped<IRepositories<Lab>, LabRepo>();
+builder.Services.AddScoped<IRepositories<Lab_technician>, LabTechnicianRepo>();
 builder.Services.AddScoped<IRepositories<Medication>, MedicationRepo>();
-builder.Services.AddScoped<IRepositories<Observation_Vital>, ObservationVitalRepo>();
-builder.Services.AddScoped<IRepositories<Operation_Room>, OperationRoomRepo>();
+builder.Services.AddScoped<IRepositories<Nurse>, NurseRepo>();
 builder.Services.AddScoped<IRepositories<Patient>, PatientRepo>();
-builder.Services.AddScoped<IRepositories<Practitioner>, PractitionerRepo>();
-builder.Services.AddScoped<IRepositories<Practitioner_Role>, PractitionerRoleRepo>();
+builder.Services.AddScoped<IRepositories<PatientCareEquipment>, PatientCareEquipmentRepo>();
+builder.Services.AddScoped<IRepositories<PatientHistory>, PatientHistoryRepo>();
 builder.Services.AddScoped<IRepositories<Prescription>, PrescriptionRepo>();
-builder.Services.AddScoped<IRepositories<Quantity>, QuantityRepo>();
+builder.Services.AddScoped<IRepositories<Rad_technician>, RadTechnicianRepo>();
 builder.Services.AddScoped<IRepositories<Radiology>, RadiologyRepo>();
-builder.Services.AddScoped<RadiologyRepo>();
-builder.Services.AddScoped<IRepositories<E_Vita_APIs.Models.Results>, ResultsRepo>();
-builder.Services.AddScoped<IRepositories<Room>, RoomRepo>();
-builder.Services.AddScoped<IRepositories<Scheduale>, ScheduleRepo>();
-builder.Services.AddScoped<IRepositories<SharedNote>, SharedNoteRepo>();
+builder.Services.AddScoped<IRepositories<Receptionist>, ReceptionistRepo>();
+builder.Services.AddScoped<IRepositories<Rooms>, RoomRepo>();
+builder.Services.AddScoped<IRepositories<Schedule>, ScheduleRepo>();
+builder.Services.AddScoped<IRepositories<ScreentimeArticle>, ScreentimeArticleRepository>();
+builder.Services.AddScoped<IRepositories<Service>, ServiceRepository>();
+builder.Services.AddScoped<IRepositories<Share>, ShareRepo>();
+builder.Services.AddScoped<IRepositories<SharedNote>, SharedNoteRepository>();
+builder.Services.AddScoped<IRepositories<User>, UserRepo>();
 builder.Services.AddScoped<IRepositories<WardRound>, WardRoundRepo>();
-builder.Services.AddScoped<IRepositories<AppointmentPractitioner>, AppointmentPractitionerRepo>();
 // ------------------------------------------------------------------------
-builder.Services.AddScoped<AppointmentPractitionerRepo>();
 // Dependency Injection for DBcontext
 builder.Services.AddDbContext<DBcontext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),

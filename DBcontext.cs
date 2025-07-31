@@ -30,10 +30,15 @@ namespace E_Vita_APIs
         public DbSet<Nurse> Nurses { get; set; }
         public DbSet<Receptionist> Receptionists { get; set; }
         public DbSet<PatientHistory> patientHistories { get; set; }
-
+        public DbSet<PatientCareEquipment> PatientCareEquipments { get; set; }
         public DBcontext(DbContextOptions options) : base(options)
         {
 
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Assigned>().HasKey(a => new { a.NurseID, a.RoomID });
+            base.OnModelCreating(modelBuilder);
         }
         //protected override void OnModelCreating(ModelBuilder modelBuilder) 
         //{

@@ -4,6 +4,7 @@ namespace E_Vita_APIs.Models
 {
     public class Share
     {
+        public string ID { get; set; } // Primary key
         // Doctor
         public string DoctorId { get; set; } // FK property
 

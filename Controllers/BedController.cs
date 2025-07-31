@@ -9,16 +9,16 @@ namespace E_Vita_APIs.Controllers
     [ApiController]
     public class BedController : ControllerBase
     {
-        private readonly IRepositories<Bed> _bedRepo;
+        private readonly IRepositories<Beds> _bedRepo;
 
-        public BedController(IRepositories<Bed> bedRepo)
+        public BedController(IRepositories<Beds> bedRepo)
         {
             _bedRepo = bedRepo;
         }
 
         // GET: api/beds
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Bed>>> GetBeds()
+        public async Task<ActionResult<IEnumerable<Beds>>> GetBeds()
         {
             var beds = await _bedRepo.GetAllAsync();
             return Ok(beds);
@@ -26,11 +26,11 @@ namespace E_Vita_APIs.Controllers
 
         // GET: api/beds/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Bed>> GetBed(int id)
+        public async Task<ActionResult<Beds>> GetBed(string id)
         {
             var bed = await _bedRepo.GetByIdAsync(id);
 
-            if (bed == null || bed.Id == 0)
+            if (bed == null)
                 return NotFound();
 
             return Ok(bed);
@@ -38,7 +38,7 @@ namespace E_Vita_APIs.Controllers
 
         // POST: api/beds
         [HttpPost]
-        public async Task<ActionResult> CreateBed([FromBody] Bed bed)
+        public async Task<ActionResult> CreateBed([FromBody] Beds bed)
         {
             await _bedRepo.AddAsync(bed);
             return Ok();
@@ -46,9 +46,9 @@ namespace E_Vita_APIs.Controllers
 
         // PUT: api/beds/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBed(int id, [FromBody] Bed updatedBed)
+        public async Task<IActionResult> UpdateBed(string id, [FromBody] Beds updatedBed)
         {
-            if (id != updatedBed.Id)
+            if (!id.Equals(updatedBed.Id))
                 return BadRequest("ID mismatch");
 
             try
@@ -64,10 +64,10 @@ namespace E_Vita_APIs.Controllers
 
         // DELETE: api/beds/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBed(int id)
+        public async Task<IActionResult> DeleteBed(string id)
         {
             var bed = await _bedRepo.GetByIdAsync(id);
-            if (bed == null || bed.Id == 0)
+            if (bed == null)
                 return NotFound();
 
             await _bedRepo.DeleteAsync(id);
@@ -75,5 +75,3 @@ namespace E_Vita_APIs.Controllers
         }
     }
 }
-    
-

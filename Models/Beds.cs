@@ -9,7 +9,7 @@ namespace E_Vita_APIs.Models
         public string Id { get; set; }
         public bool Active { get; set; } // Is the bed currently occupied?
         public BedType BedType { get; set; } // Type of bed (e.g., single, double, etc.)
-        [ForeignKey("room")]
+        [ForeignKey("RoomId")]
         public Rooms room { get; set; }
         public string RoomId { get; set; }
     }

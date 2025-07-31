@@ -14,10 +14,10 @@ namespace E_Vita_APIs.Models
         public string Doctor_ID { get; set; } // FK property
 
         [ForeignKey("Doctor_ID")]
-        public Doctor DoctorID { get; set; } // Navigation property
+        public Doctor Doctor { get; set; } // Navigation property
         public string Patient_ID { get; set; } // FK property
         [ForeignKey("Patient_ID")]
-        public Patient PatientID { get; set; } // Navigation property
+        public Patient Patient { get; set; } // Navigation property
 
         // Many-to-many navigation
         public ICollection<Radiology> Radiologies { get; set; }

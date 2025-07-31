@@ -9,8 +9,8 @@ namespace E_Vita_APIs.Controllers
     [ApiController]
     public class RoomController : ControllerBase
     {
-        private readonly IRepositories<Room> _roomRepo;
-        public RoomController(IRepositories<Room> roomRepo)
+        private readonly IRepositories<Rooms> _roomRepo;
+        public RoomController(IRepositories<Rooms> roomRepo)
         {
             _roomRepo = roomRepo;
         }
@@ -23,7 +23,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(string id)
         {
             var room = await _roomRepo.GetByIdAsync(id);
             if (room == null)
@@ -34,7 +34,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] Room room)
+        public async Task<IActionResult> Add([FromBody] Rooms room)
         {
             if (room == null)
             {
@@ -45,7 +45,7 @@ namespace E_Vita_APIs.Controllers
         }
         
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             var room = await _roomRepo.GetByIdAsync(id);
             if (room == null)
@@ -57,7 +57,7 @@ namespace E_Vita_APIs.Controllers
         }
         
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Room updatedRoom)
+        public async Task<IActionResult> Update(string id, [FromBody] Rooms updatedRoom)
         {
             if (updatedRoom == null)
             {

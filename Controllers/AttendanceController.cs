@@ -23,7 +23,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(string id)
         {
             var attendance = await _attendanceRepo.GetByIdAsync(id);
             if (attendance == null)
@@ -40,7 +40,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAttendance(int id, [FromBody] Attendance updatedAttendance)
+        public async Task<IActionResult> UpdateAttendance(string id, [FromBody] Attendance updatedAttendance)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAttendance(int id)
+        public async Task<IActionResult> DeleteAttendance(string id)
         {
             await _attendanceRepo.DeleteAsync(id);
             return Ok();

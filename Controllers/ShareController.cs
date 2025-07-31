@@ -87,7 +87,7 @@ namespace E_Vita_APIs.Controllers
         public async Task<ActionResult> GetByNoteId(string noteId)
         {
             var allShares = await _repo.GetAllAsync();
-            var shares = allShares.Where(s => s.NoteID == noteId).ToList();
+            var shares = allShares.Where(s => s.NoteId == noteId).ToList();
             
             if (!shares.Any())
                 return NotFound("No shares found for this note.");
@@ -100,7 +100,7 @@ namespace E_Vita_APIs.Controllers
         public async Task<ActionResult> GetByNurseId(string nurseId)
         {
             var allShares = await _repo.GetAllAsync();
-            var shares = allShares.Where(s => s.NurseID == nurseId).ToList();
+            var shares = allShares.Where(s => s.NurseId == nurseId).ToList();
             
             if (!shares.Any())
                 return NotFound("No shares found for this nurse.");

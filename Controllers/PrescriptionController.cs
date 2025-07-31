@@ -26,7 +26,7 @@ namespace E_Vita_APIs.Controllers
 
         // GET: api/Prescription/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Prescription>> GetPrescription(int id)
+        public async Task<ActionResult<Prescription>> GetPrescription(string id)
         {
             var prescription = await _prescriptionRepo.GetByIdAsync(id);
 
@@ -48,7 +48,7 @@ namespace E_Vita_APIs.Controllers
 
         // PUT: api/Prescription/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePrescription(int id, [FromBody] Prescription prescription)
+        public async Task<IActionResult> UpdatePrescription(string id, [FromBody] Prescription prescription)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace E_Vita_APIs.Controllers
 
         // DELETE: api/Prescription/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePrescription(int id)
+        public async Task<IActionResult> DeletePrescription(string id)
         {
             await _prescriptionRepo.DeleteAsync(id);
             return Ok();

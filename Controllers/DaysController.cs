@@ -24,7 +24,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(string id)
         {
             var day = await _daysRepo.GetByIdAsync(id);
             if (day == null)
@@ -41,7 +41,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDay(int id, [FromBody] Days updatedDay)
+        public async Task<IActionResult> UpdateDay(string id, [FromBody] Days updatedDay)
         {
 
             try
@@ -56,7 +56,7 @@ namespace E_Vita_APIs.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDay(int id)
+        public async Task<IActionResult> DeleteDay(string id)
         {
 
             await _daysRepo.DeleteAsync(id);
