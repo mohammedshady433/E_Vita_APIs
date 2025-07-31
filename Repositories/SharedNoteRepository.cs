@@ -5,37 +5,49 @@ using System.Threading.Tasks;
 
 namespace E_Vita_APIs.Repositories
 {
-    public class SharedNoteRepository : ISharedNoteRepository
+    public class SharedNoteRepository : IRepositories<SharedNote>
     {
         private readonly DBcontext _context;
         public SharedNoteRepository(DBcontext context)
         {
             _context = context;
         }
-        public async Task<IEnumerable<SharedNote>> GetSharedNotes()
+
+        public async Task<IEnumerable<SharedNote>> GetAllAsync()
         {
-            return await _context.Set<SharedNote>().ToListAsync();
+            return await _context.SharedNotes.ToListAsync();
         }
-        public async Task<SharedNote> GetSharedNote(int id)
+
+        public async Task<SharedNote> GetByIdAsync(string id)
         {
-            return await _context.Set<SharedNote>().FindAsync(id);
+            return await _context.SharedNotes.FindAsync(id);
         }
-        public async Task AddSharedNote(SharedNote sharedNote)
+
+        public async Task AddAsync(SharedNote entity)
         {
-            await _context.Set<SharedNote>().AddAsync(sharedNote);
+            await _context.SharedNotes.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
-        public async Task UpdateSharedNote(SharedNote sharedNote)
+
+        public async Task UpdateAsync(SharedNote entity, string id)
         {
-            _context.Set<SharedNote>().Update(sharedNote);
+            var existing = await _context.SharedNotes.FindAsync(id);
+            if (existing == null)
+                throw new ArgumentException("SharedNote not found");
+
+            existing.Content = entity.Content;
+            existing.practitionerID = entity.practitionerID;
+            existing.practitioner_type = entity.practitioner_type;
+
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteSharedNote(int id)
+
+        public async Task DeleteAsync(string id)
         {
-            var entity = await _context.Set<SharedNote>().FindAsync(id);
+            var entity = await _context.SharedNotes.FindAsync(id);
             if (entity != null)
             {
-                _context.Set<SharedNote>().Remove(entity);
+                _context.SharedNotes.Remove(entity);
                 await _context.SaveChangesAsync();
             }
         }

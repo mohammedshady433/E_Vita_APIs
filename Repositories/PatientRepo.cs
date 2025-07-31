@@ -16,7 +16,7 @@ namespace E_Vita_APIs.Repositories
             await _context.Patients.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             var patient = await _context.Patients.FindAsync(id);
             if (patient != null)
@@ -29,7 +29,7 @@ namespace E_Vita_APIs.Repositories
         {
             return await _context.Patients.ToListAsync();
         }
-        public async Task<Patient> GetByIdAsync(int id)
+        public async Task<Patient> GetByIdAsync(string id)
         {
             try 
             {
@@ -40,7 +40,7 @@ namespace E_Vita_APIs.Repositories
                 return new Patient();
             }
         }
-        public async Task UpdateAsync(Patient updatedPatient, int id)
+        public async Task UpdateAsync(Patient updatedPatient, string id)
         {
             var patient = await _context.Patients.FindAsync(id);
 

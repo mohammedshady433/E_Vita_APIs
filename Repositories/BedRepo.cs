@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace E_Vita_APIs.Repositories
 {
-    public class BedRepo : IRepositories<Bed>
+    public class BedRepo : IRepositories<Beds>
     {
         private readonly DBcontext _context;
         public BedRepo(DBcontext context)
@@ -11,13 +11,12 @@ namespace E_Vita_APIs.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(Bed entity)
+        public async Task AddAsync(Beds entity)
         {
             await _context.Beds.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
-
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             var bed = await _context.Beds.FindAsync(id);
             if (bed != null)
@@ -26,13 +25,12 @@ namespace E_Vita_APIs.Repositories
                 await _context.SaveChangesAsync();
             }
         }
-
-        public async Task<IEnumerable<Bed>> GetAllAsync()
+        public async Task<IEnumerable<Beds>> GetAllAsync()
         {
             return await _context.Beds.ToListAsync();
         }
 
-        public async Task<Bed> GetByIdAsync(int id)
+        public async Task<Beds> GetByIdAsync(string id)
         {
             try 
             { 
@@ -40,11 +38,10 @@ namespace E_Vita_APIs.Repositories
             }
             catch
             {
-                return new Bed();
+                return new Beds();
             }
         }
-
-        public async Task UpdateAsync(Bed updatedBed, int id)
+        public async Task UpdateAsync(Beds updatedBed, string id)
         {
             var bed = await _context.Beds.FindAsync(id);
 
@@ -53,9 +50,9 @@ namespace E_Vita_APIs.Repositories
                 throw new ArgumentException("Bed not found");
             }
 
-            bed.number = updatedBed.number;
+            bed.room = updatedBed.room;
             bed.Active = updatedBed.Active;
-
+            bed.BedType = updatedBed.BedType;
             await _context.SaveChangesAsync();
         }
     }

@@ -57,6 +57,11 @@ namespace E_Vita_APIs.Repositories
             user.Gender = updatedUser.Gender;
             user.Phone = updatedUser.Phone;
             user.Email = updatedUser.Email;
+            user.Nationalality = updatedUser.Nationalality;
+            user.degree = updatedUser.degree;
+            user.years_of_experience = updatedUser.years_of_experience;
+            user.Salary = updatedUser.Salary;
+
             await _context.SaveChangesAsync();
         }
     }

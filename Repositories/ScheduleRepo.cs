@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace E_Vita_APIs.Repositories
 {
-    public class ScheduleRepo : IRepositories<Scheduale>
+    public class ScheduleRepo : IRepositories<Schedule>
     {
         private readonly DBcontext _context;
         public ScheduleRepo(DBcontext context)
@@ -11,13 +11,13 @@ namespace E_Vita_APIs.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(Scheduale entity)
+        public async Task AddAsync(Schedule entity)
         {
             await _context.scheduales.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             var schedule = await _context.scheduales.FindAsync(id);
             if (schedule != null)
@@ -27,28 +27,24 @@ namespace E_Vita_APIs.Repositories
             }
         }
 
-        public async Task<IEnumerable<Scheduale>> GetAllAsync()
+        public async Task<IEnumerable<Schedule>> GetAllAsync()
         {
-            return await _context.scheduales
-                .Include(s => s.Appointment)
-                .ToListAsync();
+            return await _context.scheduales.ToListAsync();
         }
 
-        public async Task<Scheduale> GetByIdAsync(int id)
+        public async Task<Schedule> GetByIdAsync(string id)
         {
             try 
             { 
-                return await _context.scheduales
-                    .Include(s => s.Appointment)
-                    .FirstOrDefaultAsync(s => s.Id == id); 
+                return await _context.scheduales.FirstOrDefaultAsync(s => s.Id == id); 
             }
             catch
             {
-                return new Scheduale();
+                return new Schedule();
             }
         }
 
-        public async Task UpdateAsync(Scheduale updatedSchedule, int id)
+        public async Task UpdateAsync(Schedule updatedSchedule, string id)
         {
             var schedule = await _context.scheduales.FindAsync(id);
 
@@ -57,10 +53,10 @@ namespace E_Vita_APIs.Repositories
                 throw new ArgumentException("Schedule not found");
             }
 
-            schedule.Active = updatedSchedule.Active;
-            schedule.Service_Type = updatedSchedule.Service_Type;
-            schedule.speciality = updatedSchedule.speciality;
-            schedule.AppointmentId = updatedSchedule.AppointmentId;
+            schedule.StartTime = updatedSchedule.StartTime;
+            schedule.EndTime = updatedSchedule.EndTime;
+            schedule.User_Id = updatedSchedule.User_Id;
+            schedule.Days_ID = updatedSchedule.Days_ID;
 
             await _context.SaveChangesAsync();
         }

@@ -49,8 +49,8 @@ namespace E_Vita_APIs.Repositories
             {
                 throw new ArgumentException("Receptionist not found");
             }
-            receptionist.StartTime = updatedReceptionist.StartTime;
-            receptionist.EndTime = updatedReceptionist.EndTime;
+            receptionist.degree = updatedReceptionist.degree;
+            receptionist.Phone = updatedReceptionist.Phone;
             receptionist.Salary = updatedReceptionist.Salary;
             await _context.SaveChangesAsync();
         }

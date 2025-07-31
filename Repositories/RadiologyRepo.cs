@@ -17,7 +17,7 @@ namespace E_Vita_APIs.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             var radiology = await _context.Radiologies.FindAsync(id);
             if (radiology != null)
@@ -30,16 +30,16 @@ namespace E_Vita_APIs.Repositories
         public async Task<IEnumerable<Radiology>> GetAllAsync()
         {
             return await _context.Radiologies
-                .Include(r => r.Patient)
+                .Include(r => r.Prescriptions)
                 .ToListAsync();
         }
 
-        public async Task<Radiology> GetByIdAsync(int id)
+        public async Task<Radiology> GetByIdAsync(string id)
         {
             try 
             { 
                 return await _context.Radiologies
-                    .Include(r => r.Patient)
+                    .Include(r => r.Prescriptions)
                     .FirstOrDefaultAsync(r => r.Id == id); 
             }
             catch
@@ -48,7 +48,7 @@ namespace E_Vita_APIs.Repositories
             }
         }
 
-        public async Task UpdateAsync(Radiology updatedRadiology, int id)
+        public async Task UpdateAsync(Radiology updatedRadiology, string id)
         {
             var radiology = await _context.Radiologies.FindAsync(id);
 
@@ -58,9 +58,8 @@ namespace E_Vita_APIs.Repositories
             }
 
             radiology.Date = updatedRadiology.Date;
-            radiology.Photo = updatedRadiology.Photo;
-            radiology.Note = updatedRadiology.Note;
-            radiology.PatientId = updatedRadiology.PatientId;
+            radiology.Status = updatedRadiology.Status;
+            radiology.Examination_Type = updatedRadiology.Examination_Type;
 
             await _context.SaveChangesAsync();
         }

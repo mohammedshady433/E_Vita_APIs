@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace E_Vita_APIs.Repositories
 {
-    class WardRoundRepo : IRepositories<WardRound>
+    public class WardRoundRepo : IRepositories<WardRound>
     {
         private readonly DBcontext _context;
         public WardRoundRepo(DBcontext context)
@@ -20,7 +20,7 @@ namespace E_Vita_APIs.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             var wardRound = await _context.WardRounds.FindAsync(id);
             if (wardRound != null)
@@ -32,19 +32,28 @@ namespace E_Vita_APIs.Repositories
 
         public async Task<IEnumerable<WardRound>> GetAllAsync()
         {
-            return await _context.WardRounds.Include(x => x.Practitioner).ToListAsync();
+            return await _context.WardRounds
+                .Include(x => x.Doctor)
+                .Include(x => x.Patients)
+                .ToListAsync();
         }
 
-        public async Task<WardRound> GetByIdAsync(int id)
+        public async Task<WardRound> GetByIdAsync(string id)
         {
-            try { return await _context.WardRounds.FindAsync(id); }
+            try
+            {
+                return await _context.WardRounds
+                    .Include(x => x.Doctor)
+                    .Include(x => x.Patients)
+                    .FirstOrDefaultAsync(x => x.Id == id);
+            }
             catch
             {
                 return new WardRound();
             }
         }
 
-        public async Task UpdateAsync(WardRound updatedWardRound, int id)
+        public async Task UpdateAsync(WardRound updatedWardRound, string id)
         {
             var wardRound = await _context.WardRounds.FindAsync(id);
 
@@ -53,13 +62,13 @@ namespace E_Vita_APIs.Repositories
                 throw new ArgumentException("WardRound not found");
             }
 
-            // Update properties
             wardRound.Date = updatedWardRound.Date;
-            wardRound.Time = updatedWardRound.Time;
-            wardRound.Note = updatedWardRound.Note;
-            wardRound.PractitionerID = updatedWardRound.PractitionerID;
-            wardRound.Practitioner = updatedWardRound.Practitioner;
-
+            wardRound.StartTime = updatedWardRound.StartTime;
+            wardRound.EndTime = updatedWardRound.EndTime;
+            wardRound.Active = updatedWardRound.Active;
+            wardRound.DoctorID = updatedWardRound.DoctorID;
+            wardRound.Doctor = updatedWardRound.Doctor;
+            wardRound.Patients = updatedWardRound.Patients;
             await _context.SaveChangesAsync();
         }
     }

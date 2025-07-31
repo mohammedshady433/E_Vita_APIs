@@ -17,7 +17,7 @@ namespace E_Vita_APIs.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             var prescription = await _context.Prescriptions.FindAsync(id);
             if (prescription != null)
@@ -29,24 +29,14 @@ namespace E_Vita_APIs.Repositories
 
         public async Task<IEnumerable<Prescription>> GetAllAsync()
         {
-            return await _context.Prescriptions
-                .Include(p => p.Patient)
-                .Include(p => p.Practitioner)
-                .Include(p => p.Medications)
-                .Include(p => p.Labtest)
-                .ToListAsync();
+            return await _context.Prescriptions.ToListAsync();
         }
 
-        public async Task<Prescription> GetByIdAsync(int id)
+        public async Task<Prescription> GetByIdAsync(string id)
         {
             try 
             { 
-                return await _context.Prescriptions
-                    .Include(p => p.Patient)
-                    .Include(p => p.Practitioner)
-                    .Include(p => p.Medications)
-                    .Include(p => p.Labtest)
-                    .FirstOrDefaultAsync(p => p.Id == id); 
+                return await _context.Prescriptions.FirstOrDefaultAsync(p => p.Id.Equals(id)); 
             }
             catch
             {
@@ -54,7 +44,7 @@ namespace E_Vita_APIs.Repositories
             }
         }
 
-        public async Task UpdateAsync(Prescription updatedPrescription, int id)
+        public async Task UpdateAsync(Prescription updatedPrescription, string id)
         {
             var prescription = await _context.Prescriptions.FindAsync(id);
 
@@ -63,16 +53,14 @@ namespace E_Vita_APIs.Repositories
                 throw new ArgumentException("Prescription not found");
             }
 
-            prescription.ReasonForVisit = updatedPrescription.ReasonForVisit;
-            prescription.Medications = updatedPrescription.Medications;
-            prescription.Diseases = updatedPrescription.Diseases;
-            prescription.Labtest = updatedPrescription.Labtest;
-            prescription.RadiologyTest = updatedPrescription.RadiologyTest;
-            prescription.Examination = updatedPrescription.Examination;
-            prescription.Reserve = updatedPrescription.Reserve;
-            prescription.Surgery = updatedPrescription.Surgery;
-            prescription.PatientId = updatedPrescription.PatientId;
-            prescription.PractitionerID = updatedPrescription.PractitionerID;
+            prescription.Diagnosis = updatedPrescription.Diagnosis;
+            prescription.Complaint = updatedPrescription.Complaint;
+            prescription.Date = updatedPrescription.Date;
+            prescription.Reason_for_visit = updatedPrescription.Reason_for_visit;
+            prescription.Doctor_ID = updatedPrescription.Doctor_ID;
+            prescription.Patient_ID = updatedPrescription.Patient_ID;
+            prescription.Radiologies = updatedPrescription.Radiologies;
+            prescription.Labs = updatedPrescription.Labs;
 
             await _context.SaveChangesAsync();
         }

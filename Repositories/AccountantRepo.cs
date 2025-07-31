@@ -37,10 +37,8 @@ namespace E_Vita_APIs.Repositories
         public async Task<Accountant> GetByIdAsync(string id)
         {
             try 
-            { 
-                return await _context.Accountants
-                    .Include(a => a.finance)
-                    .FirstOrDefaultAsync(a => a.Accountant_ID.Equals(id)); 
+            {
+                return await _context.Accountants.FindAsync(id);
             }
             catch
             {
@@ -58,8 +56,9 @@ namespace E_Vita_APIs.Repositories
             }
 
             accountant.Salary = updatedAccountant.Salary;
-            accountant.Shift = updatedAccountant.Shift;
+            accountant.Rank = updatedAccountant.Rank;
             accountant.Finance_ID = updatedAccountant.Finance_ID;
+            accountant.Address = updatedAccountant.Address;
 
             await _context.SaveChangesAsync();
         }

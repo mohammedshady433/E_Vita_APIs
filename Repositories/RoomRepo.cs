@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace E_Vita_APIs.Repositories
 {
-    public class RoomRepo : IRepositories<Room>
+    public class RoomRepo : IRepositories<Rooms>
     {
         private readonly DBcontext _context;
         public RoomRepo(DBcontext context)
@@ -11,13 +11,13 @@ namespace E_Vita_APIs.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(Room entity)
+        public async Task AddAsync(Rooms entity)
         {
             await _context.Rooms.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             var room = await _context.Rooms.FindAsync(id);
             if (room != null)
@@ -27,30 +27,24 @@ namespace E_Vita_APIs.Repositories
             }
         }
 
-        public async Task<IEnumerable<Room>> GetAllAsync()
+        public async Task<IEnumerable<Rooms>> GetAllAsync()
         {
-            return await _context.Rooms
-                .Include(r => r.Patient)
-                .Include(r => r.Bed)
-                .ToListAsync();
+            return await _context.Rooms.ToListAsync();
         }
 
-        public async Task<Room> GetByIdAsync(int id)
+        public async Task<Rooms> GetByIdAsync(string id)
         {
             try 
             { 
-                return await _context.Rooms
-                    .Include(r => r.Patient)
-                    .Include(r => r.Bed)
-                    .FirstOrDefaultAsync(r => r.ID == id); 
+                return await _context.Rooms.FirstOrDefaultAsync(r => r.ID.Equals(id)); 
             }
             catch
             {
-                return new Room();
+                return new Rooms();
             }
         }
 
-        public async Task UpdateAsync(Room updatedRoom, int id)
+        public async Task UpdateAsync(Rooms updatedRoom, string id)
         {
             var room = await _context.Rooms.FindAsync(id);
 
@@ -60,9 +54,9 @@ namespace E_Vita_APIs.Repositories
             }
 
             room.availablity = updatedRoom.availablity;
-            room.RoomNumber = updatedRoom.RoomNumber;
-            room.Name = updatedRoom.Name;
-            room.PatientId = updatedRoom.PatientId;
+            room.Type = updatedRoom.Type;
+            room.Capacity = updatedRoom.Capacity;
+
             await _context.SaveChangesAsync();
         }
     }

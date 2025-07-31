@@ -18,7 +18,7 @@ namespace E_Vita_APIs.Repositories
                 await _context.SaveChangesAsync();
             }
 
-            public async Task DeleteAsync(int id)
+            public async Task DeleteAsync(string id)
             {
                 var day = await _context.Days.FindAsync(id);
                 if (day != null)
@@ -35,13 +35,13 @@ namespace E_Vita_APIs.Repositories
                     .ToListAsync();
             }
 
-            public async Task<Days> GetByIdAsync(int id)
+            public async Task<Days> GetByIdAsync(string id)
             {
                 try
                 {
                     return await _context.Days
                         .Include(d => d.Schedules)
-                        .FirstOrDefaultAsync(d => d.Days_ID == id);
+                        .FirstOrDefaultAsync(d => d.Days_ID.Equals(id));
                 }
                 catch
                 {
@@ -49,7 +49,7 @@ namespace E_Vita_APIs.Repositories
                 }
             }
 
-            public async Task UpdateAsync(Days updatedDay, int id)
+            public async Task UpdateAsync(Days updatedDay, string id)
             {
                 var day = await _context.Days.FindAsync(id);
 
@@ -59,7 +59,7 @@ namespace E_Vita_APIs.Repositories
                 }
 
                 day.DayName = updatedDay.DayName;
-
+                day.Days_ID = updatedDay.Days_ID;
                 await _context.SaveChangesAsync();
             }
         }

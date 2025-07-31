@@ -38,7 +38,7 @@ namespace E_Vita_APIs.Repositories
             try 
             { 
                 return await _context.Rad_Technicians
-                    .FirstOrDefaultAsync(rt => rt.Rad_Tech_ID.Equals(id)); 
+                    .FirstOrDefaultAsync(rt => rt.ID.Equals(id)); 
             }
             catch
             {
@@ -56,7 +56,7 @@ namespace E_Vita_APIs.Repositories
             }
 
             radTechnician.Salary = updatedRadTechnician.Salary;
-            radTechnician.Shift = updatedRadTechnician.Shift;
+            radTechnician.Department = updatedRadTechnician.Department;
 
             await _context.SaveChangesAsync();
         }

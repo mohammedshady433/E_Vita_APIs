@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace E_Vita_APIs.Repositories
 {
-    public class FamHistoryRepo : IRepositories<FamHistory>
+    public class FamHistoryRepo : IRepositories<FamilyHistory>
     {
         private readonly DBcontext _context;
         public FamHistoryRepo(DBcontext context)
@@ -11,59 +11,50 @@ namespace E_Vita_APIs.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(FamHistory entity)
+        public async Task AddAsync(FamilyHistory entity)
         {
-            await _context.FamHistories.AddAsync(entity);
+            await _context.FamilyHistories.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
-            var famHistory = await _context.FamHistories.FindAsync(id);
+            var famHistory = await _context.FamilyHistories.FindAsync(id);
             if (famHistory != null)
             {
-                _context.FamHistories.Remove(famHistory);
+                _context.FamilyHistories.Remove(famHistory);
                 await _context.SaveChangesAsync();
             }
         }
 
-        public async Task<IEnumerable<FamHistory>> GetAllAsync()
+        public async Task<IEnumerable<FamilyHistory>> GetAllAsync()
         {
-            return await _context.FamHistories
-                .Include(f => f.Patient)
-                .Include(f => f.Practitioner)
-                .ToListAsync();
+            return await _context.FamilyHistories.ToListAsync();
         }
 
-        public async Task<FamHistory> GetByIdAsync(int id)
+        public async Task<FamilyHistory> GetByIdAsync(string id)
         {
             try 
             { 
-                return await _context.FamHistories
-                    .Include(f => f.Patient)
-                    .Include(f => f.Practitioner)
-                    .FirstOrDefaultAsync(f => f.ID == id); 
+                return await _context.FamilyHistories.FirstOrDefaultAsync(f => f.Fam_ID.Equals(id)); 
             }
             catch
             {
-                return new FamHistory();
+                return new FamilyHistory();
             }
         }
 
-        public async Task UpdateAsync(FamHistory updatedFamHistory, int id)
+        public async Task UpdateAsync(FamilyHistory updatedFamHistory, string id)
         {
-            var famHistory = await _context.FamHistories.FindAsync(id);
+            var famHistory = await _context.FamilyHistories.FindAsync(id);
 
             if (famHistory == null)
             {
                 throw new ArgumentException("Family history record not found");
             }
 
-            famHistory.Disease = updatedFamHistory.Disease;
-            famHistory.Date = updatedFamHistory.Date;
-            famHistory.PractitionerID = updatedFamHistory.PractitionerID;
-            famHistory.PatientId = updatedFamHistory.PatientId;
-
+            famHistory.Explanation = updatedFamHistory.Explanation;
+            famHistory.Relation = updatedFamHistory.Relation;
             await _context.SaveChangesAsync();
         }
     }

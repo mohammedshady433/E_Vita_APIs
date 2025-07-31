@@ -38,7 +38,7 @@ namespace E_Vita_APIs.Repositories
             try 
             { 
                 return await _context.Lab_Technicians
-                    .FirstOrDefaultAsync(lt => lt.Lab_Tech_ID.Equals(id)); 
+                    .FirstOrDefaultAsync(lt => lt.ID.Equals(id)); 
             }
             catch
             {
@@ -56,7 +56,7 @@ namespace E_Vita_APIs.Repositories
             }
 
             labTechnician.Salary = updatedLabTechnician.Salary;
-            labTechnician.Shift = updatedLabTechnician.Shift;
+            labTechnician.Department = updatedLabTechnician.Department;
 
             await _context.SaveChangesAsync();
         }

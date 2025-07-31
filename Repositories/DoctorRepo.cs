@@ -52,7 +52,8 @@ namespace E_Vita_APIs.Repositories
             doctor.Salary = updatedDoctor.Salary;
             doctor.Rank = updatedDoctor.Rank;
             doctor.Speciality = updatedDoctor.Speciality;
-            doctor.ChatId = updatedDoctor.ChatId;
+            doctor.screentime = updatedDoctor.screentime;
+
             await _context.SaveChangesAsync();
         }
     }

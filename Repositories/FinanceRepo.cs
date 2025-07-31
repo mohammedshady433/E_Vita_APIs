@@ -18,7 +18,7 @@ namespace E_Vita_APIs.Repositories
                 await _context.SaveChangesAsync();
             }
 
-            public async Task DeleteAsync(int id)
+            public async Task DeleteAsync(string id)
             {
                 var finance = await _context.Finances.FindAsync(id);
                 if (finance != null)
@@ -36,14 +36,14 @@ namespace E_Vita_APIs.Repositories
                     .ToListAsync();
             }
 
-            public async Task<Finance> GetByIdAsync(int id)
+            public async Task<Finance> GetByIdAsync(string id)
             {
                 try
                 {
                     return await _context.Finances
                         .Include(f => f.Patients)
                         .Include(f => f.Accountants)
-                        .FirstOrDefaultAsync(f => f.Finance_ID == id);
+                        .FirstOrDefaultAsync(f => f.Finance_ID.Equals(id));
                 }
                 catch
                 {
@@ -51,7 +51,7 @@ namespace E_Vita_APIs.Repositories
                 }
             }
 
-            public async Task UpdateAsync(Finance updatedFinance, int id)
+            public async Task UpdateAsync(Finance updatedFinance, string id)
             {
                 var finance = await _context.Finances.FindAsync(id);
 

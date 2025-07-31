@@ -18,7 +18,7 @@ namespace E_Vita_APIs.Repositories
                 await _context.SaveChangesAsync();
             }
 
-            public async Task DeleteAsync(int id)
+            public async Task DeleteAsync(string id)
             {
                 var attendance = await _context.Attendances.FindAsync(id);
                 if (attendance != null)
@@ -35,13 +35,13 @@ namespace E_Vita_APIs.Repositories
                     .ToListAsync();
             }
 
-            public async Task<Attendance> GetByIdAsync(int id)
+            public async Task<Attendance> GetByIdAsync(string id)
             {
                 try
                 {
                     return await _context.Attendances
                         .Include(a => a.User)
-                        .FirstOrDefaultAsync(a => a.ID == id);
+                        .FirstOrDefaultAsync(a => a.ID.Equals(id));
                 }
                 catch
                 {
@@ -49,7 +49,7 @@ namespace E_Vita_APIs.Repositories
                 }
             }
 
-            public async Task UpdateAsync(Attendance updatedAttendance, int id)
+            public async Task UpdateAsync(Attendance updatedAttendance, string id)
             {
                 var attendance = await _context.Attendances.FindAsync(id);
 

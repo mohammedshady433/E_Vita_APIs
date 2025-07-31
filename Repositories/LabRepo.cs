@@ -17,7 +17,7 @@ namespace E_Vita_APIs.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             var lab = await _context.Labs.FindAsync(id);
             if (lab != null)
@@ -29,18 +29,14 @@ namespace E_Vita_APIs.Repositories
 
         public async Task<IEnumerable<Lab>> GetAllAsync()
         {
-            return await _context.Labs
-                .Include(l => l.Results)
-                .ToListAsync();
+            return await _context.Labs.ToListAsync();
         }
 
-        public async Task<Lab> GetByIdAsync(int id)
+        public async Task<Lab> GetByIdAsync(string id)
         {
             try 
             { 
-                return await _context.Labs
-                    .Include(l => l.Results)
-                    .FirstOrDefaultAsync(l => l.Id == id); 
+                return await _context.Labs.FirstOrDefaultAsync(l => l.ID.Equals(id)); 
             }
             catch
             {
@@ -48,7 +44,7 @@ namespace E_Vita_APIs.Repositories
             }
         }
 
-        public async Task UpdateAsync(Lab updatedLab, int id)
+        public async Task UpdateAsync(Lab updatedLab, string id)
         {
             var lab = await _context.Labs.FindAsync(id);
 
@@ -57,11 +53,10 @@ namespace E_Vita_APIs.Repositories
                 throw new ArgumentException("Lab record not found");
             }
 
-            lab.Photo = updatedLab.Photo;
-            lab.Note = updatedLab.Note;
-            lab.LabType = updatedLab.LabType;
+            lab.Status = updatedLab.Status;
+            lab.Type = updatedLab.Type;
 
             await _context.SaveChangesAsync();
         }
     }
-} 
+}

@@ -60,7 +60,6 @@ namespace E_Vita_APIs.Repositories
             appointment.Start = updatedAppointment.Start;
             appointment.End = updatedAppointment.End;
             appointment.Status = updatedAppointment.Status;
-            appointment.Cancelation_Reason = updatedAppointment.Cancelation_Reason;
             appointment.Cancelation_Date = updatedAppointment.Cancelation_Date;
             appointment.Service_Type = updatedAppointment.Service_Type;
             appointment.PatientId = updatedAppointment.PatientId;
